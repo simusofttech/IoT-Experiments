@@ -12,345 +12,137 @@
     <title>IoT Experiments</title>
 
     <style>
+
         * {
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
-            min-height: 100vh;
             margin: 0;
             padding: 40px 20px;
-            overflow-x: hidden;
 
             font-family: Arial, sans-serif;
 
-            background: linear-gradient(
-                -45deg,
-                #e0f2fe,
-                #f2f7fb,
-                #dbeafe,
-                #ecfeff
-            );
-
-            background-size: 400% 400%;
-            animation: backgroundAnimation 12s ease infinite;
+            background: #f4f7fa;
+            color: #1e293b;
         }
 
         .container {
             width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
+            max-width: 850px;
+            margin: auto;
         }
 
-        .header {
+        header {
             text-align: center;
             margin-bottom: 35px;
-            animation: fadeDown 1s ease;
         }
 
-        h1 {
-            color: #075985;
-            font-size: 38px;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            color: #475569;
-            font-size: 17px;
-            margin: 0;
-        }
-
-        .card {
-            position: relative;
-            max-width: 700px;
-            margin: 22px auto;
-            padding: 28px;
-            overflow: hidden;
-
-            background: rgba(255, 255, 255, 0.95);
-
-            border: 1px solid rgba(2, 132, 199, 0.15);
-            border-radius: 16px;
-
-            box-shadow:
-                0 8px 25px
-                rgba(7, 89, 133, 0.12);
-
-            animation: fadeUp 1s ease;
-
-            transition:
-                transform 0.35s ease,
-                box-shadow 0.35s ease;
-        }
-
-        .card::before {
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            left: 0;
-
-            width: 6px;
-            height: 100%;
-
-            background: linear-gradient(
-                to bottom,
-                #0284c7,
-                #06b6d4
-            );
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-
-            box-shadow:
-                0 15px 35px
-                rgba(7, 89, 133, 0.2);
-        }
-
-        .experiment-number {
-            display: inline-block;
-
-            padding: 6px 12px;
-            margin-bottom: 12px;
-
-            color: #0369a1;
-            background: #e0f2fe;
-
-            font-size: 14px;
-            font-weight: bold;
-
-            border-radius: 20px;
-        }
-
-        .controller {
-            display: block;
-
+        header h1 {
             margin-bottom: 8px;
+
+            color: #075985;
+            font-size: 36px;
+        }
+
+        header p {
+            margin: 0;
+
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .section-title {
+            margin-top: 35px;
+            margin-bottom: 15px;
+
+            color: #0f172a;
+            font-size: 24px;
+
+            border-bottom: 2px solid #0284c7;
+
+            padding-bottom: 8px;
+        }
+
+        .experiment {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 12px;
+            padding: 18px 20px;
+
+            background: white;
+
+            border: 1px solid #dbe3ea;
+            border-radius: 8px;
+        }
+
+        .experiment-info h3 {
+            margin: 0 0 5px;
+
+            color: #0f172a;
+
+            font-size: 18px;
+        }
+
+        .experiment-info p {
+            margin: 0;
 
             color: #64748b;
 
             font-size: 14px;
-            font-weight: bold;
-        }
-
-        .card h2 {
-            color: #0f172a;
-
-            font-size: 26px;
-
-            margin: 5px 0 10px;
-        }
-
-        .card p {
-            color: #475569;
-
-            font-size: 17px;
-            line-height: 1.6;
-
-            margin-bottom: 22px;
         }
 
         .open-button {
-            display: inline-flex;
+            display: inline-block;
 
-            align-items: center;
-            justify-content: center;
+            min-width: 140px;
 
-            gap: 8px;
+            padding: 10px 16px;
 
-            padding: 12px 20px;
+            text-align: center;
 
             color: white;
-
-            background: linear-gradient(
-                135deg,
-                #0284c7,
-                #0369a1
-            );
+            background: #0284c7;
 
             text-decoration: none;
 
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
 
-            border-radius: 8px;
-
-            box-shadow:
-                0 5px 14px
-                rgba(2, 132, 199, 0.25);
-
-            transition:
-                transform 0.3s ease,
-                box-shadow 0.3s ease,
-                background 0.3s ease;
+            border-radius: 6px;
         }
 
         .open-button:hover {
-            transform:
-                translateY(-3px)
-                scale(1.03);
-
-            background: linear-gradient(
-                135deg,
-                #0369a1,
-                #075985
-            );
-
-            box-shadow:
-                0 8px 20px
-                rgba(2, 132, 199, 0.35);
-        }
-
-        .arrow {
-            display: inline-block;
-
-            transition:
-                transform 0.3s ease;
-        }
-
-        .open-button:hover .arrow {
-            transform:
-                translateX(5px);
-        }
-
-        .circle {
-            position: fixed;
-
-            z-index: -1;
-
-            width: 180px;
-            height: 180px;
-
-            background:
-                rgba(14, 165, 233, 0.12);
-
-            border-radius: 50%;
-
-            animation:
-                floatingCircle
-                6s ease-in-out infinite;
-        }
-
-        .circle-one {
-            top: 8%;
-            left: 5%;
-        }
-
-        .circle-two {
-            right: 5%;
-            bottom: 8%;
-
-            width: 240px;
-            height: 240px;
-
-            animation-delay: 2s;
+            background: #0369a1;
         }
 
         footer {
             margin-top: 45px;
 
-            padding: 20px;
-
             text-align: center;
 
-            color: #64748b;
+            color: #94a3b8;
 
             font-size: 14px;
-        }
-
-        @keyframes backgroundAnimation {
-
-            0% {
-                background-position:
-                    0% 50%;
-            }
-
-            50% {
-                background-position:
-                    100% 50%;
-            }
-
-            100% {
-                background-position:
-                    0% 50%;
-            }
-        }
-
-        @keyframes fadeDown {
-
-            from {
-                opacity: 0;
-
-                transform:
-                    translateY(-30px);
-            }
-
-            to {
-                opacity: 1;
-
-                transform:
-                    translateY(0);
-            }
-        }
-
-        @keyframes fadeUp {
-
-            from {
-                opacity: 0;
-
-                transform:
-                    translateY(40px);
-            }
-
-            to {
-                opacity: 1;
-
-                transform:
-                    translateY(0);
-            }
-        }
-
-        @keyframes floatingCircle {
-
-            0%,
-            100% {
-                transform:
-                    translateY(0);
-            }
-
-            50% {
-                transform:
-                    translateY(-25px);
-            }
         }
 
         @media (max-width: 600px) {
 
             body {
-                padding:
-                    30px 15px;
+                padding: 25px 15px;
             }
 
-            h1 {
+            header h1 {
                 font-size: 29px;
             }
 
-            .subtitle {
-                font-size: 15px;
-            }
-
-            .card {
-                padding: 23px;
-            }
-
-            .card h2 {
-                font-size: 22px;
+            .experiment {
+                flex-direction: column;
+                align-items: flex-start;
             }
 
             .open-button {
@@ -358,168 +150,301 @@
             }
         }
 
-        @media (prefers-reduced-motion: reduce) {
-
-            *,
-            *::before,
-            *::after {
-
-                animation-duration:
-                    0.01ms !important;
-
-                animation-iteration-count:
-                    1 !important;
-
-                scroll-behavior:
-                    auto !important;
-            }
-        }
     </style>
+
 </head>
+
 
 <body>
 
-    <div class="circle circle-one"></div>
-    <div class="circle circle-two"></div>
-
     <main class="container">
 
-        <header class="header">
+        <header>
 
             <h1>
-                IoT User Manual Experiments
+                IoT Experiments
             </h1>
 
-            <p class="subtitle">
-                Explore practical Arduino, ESP32
-                and Raspberry Pi experiments.
+            <p>
+                Arduino, ESP32-CAM and Raspberry Pi Experiments
             </p>
 
         </header>
 
 
-        <!-- ============================= -->
-        <!-- EXPERIMENT 01 -->
-        <!-- ============================= -->
+        <!-- ===================================== -->
+        <!-- ARDUINO EXPERIMENTS -->
+        <!-- ===================================== -->
 
-        <section class="card">
-
-            <span class="experiment-number">
-                Experiment 01
-            </span>
-
-            <span class="controller">
-                Arduino UNO R3
-            </span>
-
-            <h2>
-                Radar Using Arduino UNO
-            </h2>
-
-            <p>
-                Build a radar system using an Arduino UNO,
-                HC-SR04 ultrasonic sensor and MG995 servo motor
-                to scan the surrounding area and detect objects.
-            </p>
-
-            <a
-                href="Experiment-01/"
-                class="open-button"
-            >
-
-                Open Experiment
-
-                <span class="arrow">
-                    &rarr;
-                </span>
-
-            </a>
-
-        </section>
+        <h2 class="section-title">
+            Arduino Experiments
+        </h2>
 
 
-        <!-- ============================= -->
-        <!-- EXPERIMENT 02 -->
-        <!-- ============================= -->
+        <div class="experiment">
 
-        <section class="card">
+            <div class="experiment-info">
 
-            <span class="experiment-number">
-                Experiment 02
-            </span>
+                <h3>
+                    Arduino Experiment No. 1
+                </h3>
 
-            <span class="controller">
-                Raspberry Pi 4 Model B
-            </span>
+                <p>
+                    Arduino based IoT experiment
+                </p>
 
-            <h2>
-                Smart Home Automation
-            </h2>
-
-            <p>
-                Control electrical devices using Raspberry Pi,
-                a USB camera, hand gesture recognition and
-                a 4-channel relay module.
-            </p>
+            </div>
 
             <a
-                href="Experiment-02/"
+                href="https://github.com/simusofttech/Arduino-Experiment-No-1"
                 class="open-button"
             >
-
                 Open Experiment
-
-                <span class="arrow">
-                    &rarr;
-                </span>
-
             </a>
 
-        </section>
+        </div>
 
 
-        <!-- ============================= -->
-        <!-- EXPERIMENT 03 -->
-        <!-- ============================= -->
+        <div class="experiment">
 
-        <section class="card">
+            <div class="experiment-info">
 
-            <span class="experiment-number">
-                Experiment 03
-            </span>
+                <h3>
+                    Arduino Experiment No. 2
+                </h3>
 
-            <span class="controller">
-                ESP32-CAM
-            </span>
+                <p>
+                    Arduino based IoT experiment
+                </p>
 
-            <h2>
-                Smart Door Viewer & Visitor Alert System
-            </h2>
-
-            <p>
-                Use an ESP32-CAM, push button and buzzer
-                to detect visitors, capture their photograph
-                and send real-time visitor alerts through Telegram.
-            </p>
+            </div>
 
             <a
-                href="Experiment-03/"
+                href="https://github.com/simusofttech/Arduino-Experiment-No-2"
                 class="open-button"
             >
-
                 Open Experiment
-
-                <span class="arrow">
-                    &rarr;
-                </span>
-
             </a>
 
-        </section>
+        </div>
+
+
+        <div class="experiment">
+
+            <div class="experiment-info">
+
+                <h3>
+                    Arduino Experiment No. 3
+                </h3>
+
+                <p>
+                    Arduino based IoT experiment
+                </p>
+
+            </div>
+
+            <a
+                href="https://github.com/simusofttech/Arduino-Experiment-No-3"
+                class="open-button"
+            >
+                Open Experiment
+            </a>
+
+        </div>
+
+
+
+        <!-- ===================================== -->
+        <!-- ESP32-CAM EXPERIMENTS -->
+        <!-- ===================================== -->
+
+        <h2 class="section-title">
+            ESP32-CAM Experiments
+        </h2>
+
+
+        <div class="experiment">
+
+            <div class="experiment-info">
+
+                <h3>
+                    ESP32-CAM Experiment No. 1
+                </h3>
+
+                <p>
+                    ESP32-CAM based IoT experiment
+                </p>
+
+            </div>
+
+            <a
+                href="https://github.com/simusofttech/ESP32-CAM-Experiment-No-1"
+                class="open-button"
+            >
+                Open Experiment
+            </a>
+
+        </div>
+
+
+        <div class="experiment">
+
+            <div class="experiment-info">
+
+                <h3>
+                    ESP32-CAM Experiment No. 2
+                </h3>
+
+                <p>
+                    ESP32-CAM based IoT experiment
+                </p>
+
+            </div>
+
+            <a
+                href="https://github.com/simusofttech/ESP32-CAM-Experiment-No-2"
+                class="open-button"
+            >
+                Open Experiment
+            </a>
+
+        </div>
+
+
+        <div class="experiment">
+
+            <div class="experiment-info">
+
+                <h3>
+                    ESP32-CAM Experiment No. 3
+                </h3>
+
+                <p>
+                    ESP32-CAM based IoT experiment
+                </p>
+
+            </div>
+
+            <a
+                href="https://github.com/simusofttech/ESP32-CAM-Experiment-No-3"
+                class="open-button"
+            >
+                Open Experiment
+            </a>
+
+        </div>
+
+
+        <div class="experiment">
+
+            <div class="experiment-info">
+
+                <h3>
+                    ESP32-CAM Experiment No. 4
+                </h3>
+
+                <p>
+                    ESP32-CAM based IoT experiment
+                </p>
+
+            </div>
+
+            <a
+                href="https://github.com/simusofttech/ESP32-CAM-Experiment-No-4"
+                class="open-button"
+            >
+                Open Experiment
+            </a>
+
+        </div>
+
+
+
+        <!-- ===================================== -->
+        <!-- RASPBERRY PI EXPERIMENTS -->
+        <!-- ===================================== -->
+
+        <h2 class="section-title">
+            Raspberry Pi Experiments
+        </h2>
+
+
+        <div class="experiment">
+
+            <div class="experiment-info">
+
+                <h3>
+                    Raspberry Pi Experiment No. 1
+                </h3>
+
+                <p>
+                    Raspberry Pi based IoT experiment
+                </p>
+
+            </div>
+
+            <a
+                href="https://github.com/simusofttech/Raspberry-Pi-Experiment-No-1"
+                class="open-button"
+            >
+                Open Experiment
+            </a>
+
+        </div>
+
+
+        <div class="experiment">
+
+            <div class="experiment-info">
+
+                <h3>
+                    Raspberry Pi Experiment No. 2
+                </h3>
+
+                <p>
+                    Raspberry Pi based IoT experiment
+                </p>
+
+            </div>
+
+            <a
+                href="https://github.com/simusofttech/Raspberry-Pi-Experiment-No-2"
+                class="open-button"
+            >
+                Open Experiment
+            </a>
+
+        </div>
+
+
+        <div class="experiment">
+
+            <div class="experiment-info">
+
+                <h3>
+                    Raspberry Pi Experiment No. 3
+                </h3>
+
+                <p>
+                    Raspberry Pi based IoT experiment
+                </p>
+
+            </div>
+
+            <a
+                href="https://github.com/simusofttech/Raspberry-Pi-Experiment-No-3"
+                class="open-button"
+            >
+                Open Experiment
+            </a>
+
+        </div>
 
 
         <footer>
-            IoT User Manual Experiments
+
+            IoT Experiments
+
         </footer>
 
     </main>
