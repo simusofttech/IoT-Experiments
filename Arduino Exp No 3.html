@@ -1,1 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Arduino Experiment No. 3 - Rain Detection Sensor</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            color: #1e293b;
+
+            background: #f4f7fa;
+
+            line-height: 1.6;
+        }
+
+
+        /* =============================
+           HEADER
+        ============================= */
+
+        header {
+            padding: 35px 20px;
+
+            text-align: center;
+
+            color: white;
+
+            background: #075985;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+
+            font-size: 34px;
+        }
+
+        header p {
+            margin: 0;
+
+            color: #e0f2fe;
+
+            font-size: 16px;
+        }
+
+
+        /* =============================
+           NAVIGATION
+        ============================= */
+
+        nav {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 22px;
+
+            flex-wrap: wrap;
+
+            padding: 14px;
+
+            background: white;
+
+            border-bottom: 1px solid #dbe3ea;
+        }
+
+        nav a {
+            color: #075985;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #0284c7;
+        }
+
+
+        /* =============================
+           CONTAINER
+        ============================= */
+
+        .container {
+            width: 90%;
+
+            max-width: 900px;
+
+            margin: auto;
+
+            padding: 35px 0;
+        }
+
+
+        /* =============================
+           SECTIONS
+        ============================= */
+
+        .section {
+            margin-bottom: 25px;
+
+            padding: 25px;
+
+            background: white;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 8px;
+        }
+
+        .section h2 {
+            margin-top: 0;
+
+            padding-bottom: 8px;
+
+            color: #075985;
+
+            border-bottom: 2px solid #e0f2fe;
+        }
+
+
+        /* =============================
+           PROJECT INFO
+        ============================= */
+
+        .project-info {
+            padding: 16px;
+
+            background: #f0f9ff;
+
+            border-left: 4px solid #0284c7;
+
+            border-radius: 5px;
+        }
+
+        .project-info p {
+            margin: 7px 0;
+        }
+
+
+        /* =============================
+           COMPONENTS
+        ============================= */
+
+        .components {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+
+            margin-top: 20px;
+        }
+
+        .component-card {
+            padding: 18px;
+
+            text-align: center;
+
+            background: #f8fafc;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 7px;
+        }
+
+        .component-card strong {
+            color: #075985;
+
+            font-size: 18px;
+        }
+
+        .component-card p {
+            margin-bottom: 0;
+        }
+
+
+        /* =============================
+           TABLE
+        ============================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            margin-top: 15px;
+
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+
+            border: 1px solid #cbd5e1;
+
+            text-align: left;
+        }
+
+        th {
+            color: white;
+
+            background: #075985;
+        }
+
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+
+        /* =============================
+           CIRCUIT DIAGRAM
+        ============================= */
+
+        .circuit {
+            margin-top: 20px;
+
+            text-align: center;
+        }
+
+        .circuit img {
+            width: 100%;
+
+            max-width: 650px;
+
+            height: auto;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 6px;
+        }
+
+
+        /* =============================
+           CODE
+        ============================= */
+
+        .code-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 10px 15px;
+
+            color: white;
+
+            background: #1e293b;
+
+            border-radius: 7px 7px 0 0;
+        }
+
+        .copy-button {
+            padding: 7px 12px;
+
+            color: white;
+
+            background: #0284c7;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+        }
+
+        .copy-button:hover {
+            background: #0369a1;
+        }
+
+        pre {
+            margin: 0;
+
+            padding: 20px;
+
+            overflow-x: auto;
+
+            color: #e2e8f0;
+
+            background: #0f172a;
+
+            border-radius: 0 0 7px 7px;
+
+            font-family: Consolas, monospace;
+
+            font-size: 14px;
+        }
+
+
+        /* =============================
+           NOTE
+        ============================= */
+
+        .note {
+            margin-top: 18px;
+
+            padding: 14px;
+
+            color: #854d0e;
+
+            background: #fef9c3;
+
+            border: 1px solid #fde047;
+
+            border-radius: 6px;
+        }
+
+
+        /* =============================
+           BACK BUTTON
+        ============================= */
+
+        .back-button {
+            display: inline-block;
+
+            padding: 10px 18px;
+
+            color: white;
+
+            background: #0284c7;
+
+            text-decoration: none;
+
+            border-radius: 6px;
+
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background: #0369a1;
+        }
+
+
+        /* =============================
+           FOOTER
+        ============================= */
+
+        footer {
+            margin-top: 30px;
+
+            padding: 20px;
+
+            text-align: center;
+
+            color: #64748b;
+
+            background: white;
+
+            border-top: 1px solid #dbe3ea;
+        }
+
+
+        /* =============================
+           MOBILE
+        ============================= */
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 27px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .components {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                gap: 12px;
+
+                font-size: 13px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =============================
+         HEADER
+    ============================= -->
+
+    <header>
+
+        <h1>
+            Arduino Experiment No. 3
+        </h1>
+
+        <p>
+            Rain Detection Sensor
+        </p>
+
+    </header>
+
+
+
+    <!-- =============================
+         NAVIGATION
+    ============================= -->
+
+    <nav>
+
+        <a href="#details">
+            Details
+        </a>
+
+        <a href="#components">
+            Components
+        </a>
+
+        <a href="#connections">
+            Connections
+        </a>
+
+        <a href="#circuit">
+            Circuit Diagram
+        </a>
+
+        <a href="#code">
+            Arduino Code
+        </a>
+
+        <a href="#steps">
+            Steps
+        </a>
+
+    </nav>
+
+
+
+    <main class="container">
+
+
+        <!-- =============================
+             PROJECT DETAILS
+        ============================= -->
+
+        <section
+            class="section"
+            id="details"
+        >
+
+            <h2>
+                Experiment Details
+            </h2>
+
+            <div class="project-info">
+
+                <p>
+                    <strong>Experiment:</strong>
+                    Arduino Experiment No. 3
+                </p>
+
+                <p>
+                    <strong>Experiment Name:</strong>
+                    Rain Detection Sensor
+                </p>
+
+                <p>
+                    <strong>Controller:</strong>
+                    Arduino UNO
+                </p>
+
+                <p>
+                    <strong>Input Device:</strong>
+                    Rain Detection Sensor
+                </p>
+
+                <p>
+                    <strong>Output Device:</strong>
+                    Buzzer
+                </p>
+
+                <p>
+                    <strong>Programming Software:</strong>
+                    Arduino IDE
+                </p>
+
+                <p>
+                    <strong>Objective:</strong>
+                    To detect water or rain using a rain
+                    detection sensor and activate a buzzer
+                    when the sensor value crosses the
+                    specified threshold.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             COMPONENTS
+        ============================= -->
+
+        <section
+            class="section"
+            id="components"
+        >
+
+            <h2>
+                Required Components
+            </h2>
+
+            <div class="components">
+
+
+                <div class="component-card">
+
+                    <strong>
+                        Arduino UNO
+                    </strong>
+
+                    <p>
+                        Main controller used to read the
+                        rain sensor value.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        Rain Detection Sensor
+                    </strong>
+
+                    <p>
+                        Detects the presence of water or rain
+                        and provides an analog output.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        Buzzer
+                    </strong>
+
+                    <p>
+                        Provides an audible indication when
+                        water is detected.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        Jumper Wires
+                    </strong>
+
+                    <p>
+                        Used to make the circuit connections.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        Breadboard
+                    </strong>
+
+                    <p>
+                        Used to assemble the circuit.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        USB Cable
+                    </strong>
+
+                    <p>
+                        Connects Arduino UNO to the computer.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             CONNECTIONS
+        ============================= -->
+
+        <section
+            class="section"
+            id="connections"
+        >
+
+            <h2>
+                Circuit Connections
+            </h2>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Component
+                            </th>
+
+                            <th>
+                                Pin
+                            </th>
+
+                            <th>
+                                Arduino Connection
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+                                Rain Sensor
+                            </td>
+
+                            <td>
+                                Analog Output
+                            </td>
+
+                            <td>
+                                A0
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Buzzer
+                            </td>
+
+                            <td>
+                                Positive / Signal
+                            </td>
+
+                            <td>
+                                Digital Pin 8
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Buzzer
+                            </td>
+
+                            <td>
+                                Negative
+                            </td>
+
+                            <td>
+                                GND
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="note">
+
+                The rain sensor is connected to analog pin
+                <strong>A0</strong>, while the buzzer is
+                connected to digital pin
+                <strong>8</strong>.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             CIRCUIT DIAGRAM
+        ============================= -->
+
+        <section
+            class="section"
+            id="circuit"
+        >
+
+            <h2>
+                Circuit Diagram
+            </h2>
+
+            <p>
+
+                Connect the analog output of the rain sensor
+                to Arduino pin A0. Connect the buzzer to
+                digital pin 8 and GND.
+
+            </p>
+
+
+            <div class="circuit">
+
+                <img
+                    src="Rain_Detection_Circuit.png"
+                    alt="Arduino Rain Detection Sensor Circuit Diagram"
+                >
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             WORKING
+        ============================= -->
+
+        <section class="section">
+
+            <h2>
+                Working Principle
+            </h2>
+
+            <p>
+
+                The rain sensor is connected to Arduino
+                analog pin A0 and continuously provides an
+                analog value between 0 and 1023.
+
+            </p>
+
+            <p>
+
+                The Arduino reads this sensor value using
+                the <strong>analogRead()</strong> function.
+
+            </p>
+
+            <p>
+
+                The sensor value is also displayed on the
+                Serial Monitor using
+                <strong>Serial.println()</strong>.
+
+            </p>
+
+            <p>
+
+                When the sensor value is greater than
+                <strong>500</strong>, the buzzer is turned ON.
+
+            </p>
+
+            <p>
+
+                When the value is 500 or less, the buzzer
+                is turned OFF.
+
+            </p>
+
+            <p>
+
+                This process repeats continuously with a
+                short delay for stable operation.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =============================
+             ARDUINO CODE
+        ============================= -->
+
+        <section
+            class="section"
+            id="code"
+        >
+
+            <h2>
+                Arduino Code
+            </h2>
+
+
+            <div class="code-header">
+
+                <span>
+                    rain_detection.ino
+                </span>
+
+                <button
+                    type="button"
+                    class="copy-button"
+                    onclick="copyCode('arduinoCode', this)"
+                >
+                    Copy Code
+                </button>
+
+            </div>
+
+
+            <pre><code id="arduinoCode">int sensor = A0;   // Rain sensor connected to A0
+
+int buzzer = 8;    // Buzzer connected to digital pin 8
+
+void setup() {
+
+    pinMode(buzzer, OUTPUT);   // Set buzzer pin as output
+
+    Serial.begin(9600);        // Initialize serial communication
+
+}
+
+void loop() {
+
+    int value = analogRead(sensor);   // Read sensor value (0–1023)
+
+    Serial.println(value);             // Display value on Serial Monitor
+
+    if (value > 500) {                 // Threshold for water detection
+
+        digitalWrite(buzzer, HIGH);    // Turn ON buzzer
+
+    } else {
+
+        digitalWrite(buzzer, LOW);     // Turn OFF buzzer
+
+    }
+
+    delay(200);                        // Small delay for stability
+
+}</code></pre>
+
+
+            <div class="note">
+
+                The threshold value is set to
+                <strong>500</strong>.
+                When the sensor reading is greater than
+                500, the buzzer is switched ON.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             OPERATING STEPS
+        ============================= -->
+
+        <section
+            class="section"
+            id="steps"
+        >
+
+            <h2>
+                Steps to Perform the Experiment
+            </h2>
+
+            <ol>
+
+                <li>
+                    Connect the rain detection sensor to
+                    the Arduino UNO.
+                </li>
+
+                <li>
+                    Connect the sensor analog output to
+                    Arduino pin A0.
+                </li>
+
+                <li>
+                    Connect the buzzer to digital pin 8
+                    and GND.
+                </li>
+
+                <li>
+                    Connect the Arduino UNO to the computer
+                    using the USB cable.
+                </li>
+
+                <li>
+                    Open Arduino IDE.
+                </li>
+
+                <li>
+                    Select the correct Arduino board and
+                    COM port.
+                </li>
+
+                <li>
+                    Enter the rain detection program.
+                </li>
+
+                <li>
+                    Click the
+                    <strong>Verify</strong>
+                    button.
+                </li>
+
+                <li>
+                    Upload the program to the Arduino.
+                </li>
+
+                <li>
+                    Open the Serial Monitor and set the
+                    baud rate to
+                    <strong>9600</strong>.
+                </li>
+
+                <li>
+                    Apply water to the rain sensor and
+                    observe the sensor value.
+                </li>
+
+                <li>
+                    Observe the buzzer operation based on
+                    the sensor threshold.
+
+                </li>
+
+            </ol>
+
+        </section>
+
+
+
+        <!-- =============================
+             EXPECTED OUTPUT
+        ============================= -->
+
+        <section class="section">
+
+            <h2>
+                Expected Output
+            </h2>
+
+            <p>
+
+                The rain sensor value is continuously
+                displayed on the Serial Monitor.
+
+            </p>
+
+            <p>
+
+                When the sensor value is greater than
+                <strong>500</strong>, the buzzer turns
+                <strong>ON</strong>.
+
+            </p>
+
+            <p>
+
+                When the sensor value is 500 or less,
+                the buzzer turns
+                <strong>OFF</strong>.
+
+            </p>
+
+            <p>
+
+                The sensor reading and buzzer status are
+                continuously updated.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =============================
+             BACK BUTTON
+        ============================= -->
+
+        <a
+            href="index.html"
+            class="back-button"
+        >
+
+            ← Back to IoT Experiments
+
+        </a>
+
+
+    </main>
+
+
+
+    <footer>
+
+        Arduino Experiment No. 3 |
+        Rain Detection Sensor
+
+    </footer>
+
+
+
+    <!-- =============================
+         JAVASCRIPT
+    ============================= -->
+
+    <script>
+
+        function copyCode(codeId, button) {
+
+            const code =
+                document.getElementById(codeId).innerText;
+
+            navigator.clipboard
+                .writeText(code)
+                .then(function () {
+
+                    const originalText =
+                        button.textContent;
+
+                    button.textContent =
+                        "Copied!";
+
+                    setTimeout(
+                        function () {
+
+                            button.textContent =
+                                originalText;
+
+                        },
+                        2000
+                    );
+
+                })
+                .catch(function () {
+
+                    alert(
+                        "Code could not be copied."
+                    );
+
+                });
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
