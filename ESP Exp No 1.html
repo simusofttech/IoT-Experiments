@@ -1,1 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ESP32-CAM Experiment No. 1 - LED Control</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            color: #1e293b;
+
+            background: #f4f7fa;
+
+            line-height: 1.6;
+        }
+
+
+        /* =============================
+           HEADER
+        ============================= */
+
+        header {
+            padding: 35px 20px;
+
+            text-align: center;
+
+            color: white;
+
+            background: #075985;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+
+            font-size: 34px;
+        }
+
+        header p {
+            margin: 0;
+
+            color: #e0f2fe;
+
+            font-size: 16px;
+        }
+
+
+        /* =============================
+           NAVIGATION
+        ============================= */
+
+        nav {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 22px;
+
+            flex-wrap: wrap;
+
+            padding: 14px;
+
+            background: white;
+
+            border-bottom: 1px solid #dbe3ea;
+        }
+
+        nav a {
+            color: #075985;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #0284c7;
+        }
+
+
+        /* =============================
+           CONTAINER
+        ============================= */
+
+        .container {
+            width: 90%;
+
+            max-width: 900px;
+
+            margin: auto;
+
+            padding: 35px 0;
+        }
+
+
+        /* =============================
+           SECTIONS
+        ============================= */
+
+        .section {
+            margin-bottom: 25px;
+
+            padding: 25px;
+
+            background: white;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 8px;
+        }
+
+        .section h2 {
+            margin-top: 0;
+
+            padding-bottom: 8px;
+
+            color: #075985;
+
+            border-bottom: 2px solid #e0f2fe;
+        }
+
+
+        /* =============================
+           PROJECT INFO
+        ============================= */
+
+        .project-info {
+            padding: 16px;
+
+            background: #f0f9ff;
+
+            border-left: 4px solid #0284c7;
+
+            border-radius: 5px;
+        }
+
+        .project-info p {
+            margin: 7px 0;
+        }
+
+
+        /* =============================
+           COMPONENTS
+        ============================= */
+
+        .components {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+
+            margin-top: 20px;
+        }
+
+        .component-card {
+            padding: 18px;
+
+            text-align: center;
+
+            background: #f8fafc;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 7px;
+        }
+
+        .component-card strong {
+            color: #075985;
+
+            font-size: 18px;
+        }
+
+        .component-card p {
+            margin-bottom: 0;
+        }
+
+
+        /* =============================
+           TABLE
+        ============================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            margin-top: 15px;
+
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+
+            border: 1px solid #cbd5e1;
+
+            text-align: left;
+        }
+
+        th {
+            color: white;
+
+            background: #075985;
+        }
+
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+
+        /* =============================
+           CIRCUIT DIAGRAM
+        ============================= */
+
+        .circuit {
+            margin-top: 20px;
+
+            text-align: center;
+        }
+
+        .circuit img {
+            width: 100%;
+
+            max-width: 650px;
+
+            height: auto;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 6px;
+        }
+
+
+        /* =============================
+           CODE
+        ============================= */
+
+        .code-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 10px 15px;
+
+            color: white;
+
+            background: #1e293b;
+
+            border-radius: 7px 7px 0 0;
+        }
+
+        .copy-button {
+            padding: 7px 12px;
+
+            color: white;
+
+            background: #0284c7;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+        }
+
+        .copy-button:hover {
+            background: #0369a1;
+        }
+
+        pre {
+            margin: 0;
+
+            padding: 20px;
+
+            overflow-x: auto;
+
+            color: #e2e8f0;
+
+            background: #0f172a;
+
+            border-radius: 0 0 7px 7px;
+
+            font-family: Consolas, monospace;
+
+            font-size: 14px;
+        }
+
+
+        /* =============================
+           NOTE
+        ============================= */
+
+        .note {
+            margin-top: 18px;
+
+            padding: 14px;
+
+            color: #854d0e;
+
+            background: #fef9c3;
+
+            border: 1px solid #fde047;
+
+            border-radius: 6px;
+        }
+
+
+        /* =============================
+           BACK BUTTON
+        ============================= */
+
+        .back-button {
+            display: inline-block;
+
+            padding: 10px 18px;
+
+            color: white;
+
+            background: #0284c7;
+
+            text-decoration: none;
+
+            border-radius: 6px;
+
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background: #0369a1;
+        }
+
+
+        /* =============================
+           FOOTER
+        ============================= */
+
+        footer {
+            margin-top: 30px;
+
+            padding: 20px;
+
+            text-align: center;
+
+            color: #64748b;
+
+            background: white;
+
+            border-top: 1px solid #dbe3ea;
+        }
+
+
+        /* =============================
+           MOBILE
+        ============================= */
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 27px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .components {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                gap: 12px;
+
+                font-size: 13px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =============================
+         HEADER
+    ============================= -->
+
+    <header>
+
+        <h1>
+            ESP32-CAM Experiment No. 1
+        </h1>
+
+        <p>
+            LED Control Using ESP32-CAM
+        </p>
+
+    </header>
+
+
+
+    <!-- =============================
+         NAVIGATION
+    ============================= -->
+
+    <nav>
+
+        <a href="#details">
+            Details
+        </a>
+
+        <a href="#components">
+            Components
+        </a>
+
+        <a href="#connections">
+            Connections
+        </a>
+
+        <a href="#circuit">
+            Circuit Diagram
+        </a>
+
+        <a href="#code1">
+            Code 1
+        </a>
+
+        <a href="#code2">
+            Code 2
+        </a>
+
+        <a href="#code3">
+            Code 3
+        </a>
+
+        <a href="#steps">
+            Steps
+        </a>
+
+    </nav>
+
+
+
+    <main class="container">
+
+
+        <!-- =============================
+             PROJECT DETAILS
+        ============================= -->
+
+        <section
+            class="section"
+            id="details"
+        >
+
+            <h2>
+                Experiment Details
+            </h2>
+
+            <div class="project-info">
+
+                <p>
+                    <strong>Experiment:</strong>
+                    ESP32-CAM Experiment No. 1
+                </p>
+
+                <p>
+                    <strong>Experiment Name:</strong>
+                    LED Control Using ESP32-CAM
+                </p>
+
+                <p>
+                    <strong>Controller:</strong>
+                    ESP32-CAM
+                </p>
+
+                <p>
+                    <strong>Input Device:</strong>
+                    Tactile Switch / Potentiometer
+                </p>
+
+                <p>
+                    <strong>Output Device:</strong>
+                    Onboard LED
+                </p>
+
+                <p>
+                    <strong>LED Pin:</strong>
+                    GPIO 4
+                </p>
+
+                <p>
+                    <strong>Programming Software:</strong>
+                    Arduino IDE
+                </p>
+
+                <p>
+                    <strong>Objective:</strong>
+                    To control the onboard LED of the ESP32-CAM
+                    using basic digital output, a push button,
+                    and PWM-based brightness control.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             COMPONENTS
+        ============================= -->
+
+        <section
+            class="section"
+            id="components"
+        >
+
+            <h2>
+                Required Components
+            </h2>
+
+            <div class="components">
+
+
+                <div class="component-card">
+
+                    <strong>
+                        ESP32-CAM
+                    </strong>
+
+                    <p>
+                        Main controller with an onboard LED
+                        connected to GPIO 4.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        Tactile Switch
+                    </strong>
+
+                    <p>
+                        Used to control the onboard LED
+                        in Code-2.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        Potentiometer
+                    </strong>
+
+                    <p>
+                        Used to control LED brightness
+                        in Code-3.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        Jumper Wires
+                    </strong>
+
+                    <p>
+                        Used for making the required
+                        circuit connections.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             CONNECTIONS
+        ============================= -->
+
+        <section
+            class="section"
+            id="connections"
+        >
+
+            <h2>
+                Circuit Connections
+            </h2>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Component
+                            </th>
+
+                            <th>
+                                Pin
+                            </th>
+
+                            <th>
+                                ESP32-CAM Connection
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+                                Onboard LED
+                            </td>
+
+                            <td>
+                                LED_PIN
+                            </td>
+
+                            <td>
+                                GPIO 4
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Tactile Switch
+                            </td>
+
+                            <td>
+                                BUTTON_PIN
+                            </td>
+
+                            <td>
+                                GPIO 13
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Potentiometer
+                            </td>
+
+                            <td>
+                                Middle Pin
+                            </td>
+
+                            <td>
+                                GPIO 13
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Tactile Switch
+                            </td>
+
+                            <td>
+                                Other Pin
+                            </td>
+
+                            <td>
+                                GND
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="note">
+
+                The ESP32-CAM onboard LED is controlled
+                through GPIO 4. Code-2 uses GPIO 13 for
+                the tactile switch, while Code-3 uses
+                GPIO 13 for the potentiometer.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             CIRCUIT DIAGRAM
+        ============================= -->
+
+        <section
+            class="section"
+            id="circuit"
+        >
+
+            <h2>
+                Circuit Diagram
+            </h2>
+
+            <p>
+
+                Connect the required external components
+                according to the respective code. The
+                onboard LED is connected to GPIO 4.
+
+            </p>
+
+
+            <div class="circuit">
+
+                <img
+                    src="ESP32_CAM_LED_Circuit.png"
+                    alt="ESP32-CAM LED circuit diagram"
+                >
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             WORKING
+        ============================= -->
+
+        <section class="section">
+
+            <h2>
+                Working Principle
+            </h2>
+
+            <p>
+
+                <strong>Code-1:</strong>
+                The onboard LED connected to GPIO 4 is
+                configured as an output. The LED is turned
+                ON and OFF alternately with a delay of
+                500 milliseconds.
+
+            </p>
+
+            <p>
+
+                <strong>Code-2:</strong>
+                The tactile switch is connected to GPIO 13
+                and configured with the internal pull-up
+                resistor. When the button is pressed, the
+                LED turns ON. When the button is released,
+                the LED turns OFF.
+
+            </p>
+
+            <p>
+
+                <strong>Code-3:</strong>
+                The potentiometer connected to GPIO 13
+                provides an analog value. This value is
+                mapped from 0–4095 to 0–255 and used to
+                control the brightness of the onboard LED
+                using PWM.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =============================
+             CODE 1
+        ============================= -->
+
+        <section
+            class="section"
+            id="code1"
+        >
+
+            <h2>
+                Code-1: Onboard LED Blinking
+            </h2>
+
+
+            <div class="code-header">
+
+                <span>
+                    code_1.ino
+                </span>
+
+                <button
+                    type="button"
+                    class="copy-button"
+                    onclick="copyCode('codeOne', this)"
+                >
+                    Copy Code
+                </button>
+
+            </div>
+
+
+            <pre><code id="codeOne">#define LED_PIN 4
+
+void setup() {
+
+    pinMode(LED_PIN, OUTPUT);
+
+}
+
+void loop() {
+
+    digitalWrite(LED_PIN, HIGH);
+
+    delay(500);
+
+    digitalWrite(LED_PIN, LOW);
+
+    delay(500);
+
+}</code></pre>
+
+
+            <div class="note">
+
+                The ESP32-CAM onboard LED is connected
+                to GPIO 4. Changing the delay value
+                changes the blinking speed of the LED.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             CODE 2
+        ============================= -->
+
+        <section
+            class="section"
+            id="code2"
+        >
+
+            <h2>
+                Code-2: LED Control Using Tactile Switch
+            </h2>
+
+
+            <div class="code-header">
+
+                <span>
+                    code_2.ino
+                </span>
+
+                <button
+                    type="button"
+                    class="copy-button"
+                    onclick="copyCode('codeTwo', this)"
+                >
+                    Copy Code
+                </button>
+
+            </div>
+
+
+            <pre><code id="codeTwo">#define LED_PIN 4
+
+#define BUTTON_PIN 13
+
+void setup() {
+
+    pinMode(LED_PIN, OUTPUT);
+
+    pinMode(BUTTON_PIN, INPUT_PULLUP);
+
+    digitalWrite(LED_PIN, LOW);
+
+}
+
+void loop() {
+
+    int buttonState =
+        digitalRead(BUTTON_PIN);
+
+    if (buttonState == LOW) {
+
+        digitalWrite(LED_PIN, HIGH);
+
+    } else {
+
+        digitalWrite(LED_PIN, LOW);
+
+    }
+
+}</code></pre>
+
+
+            <div class="note">
+
+                The button uses
+                <strong>INPUT_PULLUP</strong>.
+                When the button is pressed, the input
+                becomes LOW because it is connected to GND.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             CODE 3
+        ============================= -->
+
+        <section
+            class="section"
+            id="code3"
+        >
+
+            <h2>
+                Code-3: LED Brightness Control Using Potentiometer
+            </h2>
+
+
+            <div class="code-header">
+
+                <span>
+                    code_3.ino
+                </span>
+
+                <button
+                    type="button"
+                    class="copy-button"
+                    onclick="copyCode('codeThree', this)"
+                >
+                    Copy Code
+                </button>
+
+            </div>
+
+
+            <pre><code id="codeThree">#define LED_PIN 4
+
+#define POT_PIN 13
+
+#define PWM_FREQ 5000
+
+#define PWM_RESOLUTION 8
+
+void setup() {
+
+    ledcAttach(
+        LED_PIN,
+        PWM_FREQ,
+        PWM_RESOLUTION
+    );
+
+    pinMode(POT_PIN, INPUT);
+
+}
+
+void loop() {
+
+    int potValue =
+        analogRead(POT_PIN);
+
+    int brightness =
+        map(
+            potValue,
+            0,
+            4095,
+            0,
+            255
+        );
+
+    ledcWrite(
+        LED_PIN,
+        brightness
+    );
+
+    delay(10);
+
+}</code></pre>
+
+
+            <div class="note">
+
+                The potentiometer reading is converted
+                from the ESP32 analog range of
+                <strong>0–4095</strong> to a brightness
+                range of <strong>0–255</strong>.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             OPERATING STEPS
+        ============================= -->
+
+        <section
+            class="section"
+            id="steps"
+        >
+
+            <h2>
+                Steps to Perform the Experiment
+            </h2>
+
+            <ol>
+
+                <li>
+                    Connect the ESP32-CAM to the computer.
+                </li>
+
+                <li>
+                    Open Arduino IDE.
+                </li>
+
+                <li>
+                    Select the appropriate ESP32-CAM board
+                    from the board options.
+                </li>
+
+                <li>
+                    Select the correct COM port.
+                </li>
+
+                <li>
+                    Upload Code-1 and observe the onboard
+                    LED blinking.
+                </li>
+
+                <li>
+                    Connect the tactile switch to GPIO 13
+                    and upload Code-2.
+                </li>
+
+                <li>
+                    Press the switch and observe the LED.
+                </li>
+
+                <li>
+                    Connect the potentiometer to GPIO 13
+                    and upload Code-3.
+                </li>
+
+                <li>
+                    Rotate the potentiometer and observe
+                    the change in LED brightness.
+
+                </li>
+
+            </ol>
+
+        </section>
+
+
+
+        <!-- =============================
+             EXPECTED OUTPUT
+        ============================= -->
+
+        <section class="section">
+
+            <h2>
+                Expected Output
+            </h2>
+
+            <p>
+
+                <strong>Code-1:</strong>
+                The onboard LED blinks continuously,
+                turning ON and OFF every 500 milliseconds.
+
+            </p>
+
+            <p>
+
+                <strong>Code-2:</strong>
+                The onboard LED turns ON when the tactile
+                switch is pressed and turns OFF when it
+                is released.
+
+            </p>
+
+            <p>
+
+                <strong>Code-3:</strong>
+                The onboard LED brightness changes as the
+                potentiometer is rotated.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =============================
+             BACK BUTTON
+        ============================= -->
+
+        <a
+            href="index.html"
+            class="back-button"
+        >
+
+            ← Back to IoT Experiments
+
+        </a>
+
+
+    </main>
+
+
+
+    <footer>
+
+        ESP32-CAM Experiment No. 1 |
+        LED Control
+
+    </footer>
+
+
+
+    <!-- =============================
+         JAVASCRIPT
+    ============================= -->
+
+    <script>
+
+        function copyCode(codeId, button) {
+
+            const code =
+                document.getElementById(codeId).innerText;
+
+            navigator.clipboard
+                .writeText(code)
+                .then(function () {
+
+                    const originalText =
+                        button.textContent;
+
+                    button.textContent =
+                        "Copied!";
+
+                    setTimeout(
+                        function () {
+
+                            button.textContent =
+                                originalText;
+
+                        },
+                        2000
+                    );
+
+                })
+                .catch(function () {
+
+                    alert(
+                        "Code could not be copied."
+                    );
+
+                });
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
