@@ -1,1 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Arduino Experiment No. 2 - Servo Motor Control</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f8fc;
+            color: #172b4d;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background-color: #0d5f89;
+            color: white;
+            text-align: center;
+            padding: 45px 20px;
+        }
+
+        header h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 20px;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: white;
+            border-bottom: 1px solid #d8e3ed;
+            padding: 18px 10px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav a {
+            color: #005b87;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: bold;
+            margin: 0 18px;
+        }
+
+        nav a:hover {
+            color: #0089c9;
+        }
+
+        /* Main */
+        .container {
+            max-width: 1050px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            background-color: white;
+            border: 1px solid #d7e2ec;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.04);
+        }
+
+        .section h2 {
+            color: #075e8c;
+            font-size: 30px;
+            border-bottom: 2px solid #d4eafa;
+            padding-bottom: 12px;
+            margin-bottom: 25px;
+        }
+
+        /* Experiment Card */
+        .experiment-card {
+            background-color: #eef8fd;
+            border-left: 5px solid #0088cc;
+            border-radius: 7px;
+            padding: 25px;
+            transition: 0.3s ease;
+        }
+
+        .experiment-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 5px 15px rgba(0, 91, 135, 0.15);
+        }
+
+        .experiment-card h3 {
+            color: #075e8c;
+            font-size: 23px;
+            margin-bottom: 10px;
+        }
+
+        .experiment-card p {
+            color: #334e68;
+            font-size: 17px;
+            margin-bottom: 18px;
+        }
+
+        /* Button */
+        .btn {
+            display: inline-block;
+            background-color: #0078b5;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 15px;
+            font-weight: bold;
+            transition: 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #005f8d;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #0d5f89;
+            color: white;
+            text-align: center;
+            padding: 22px;
+            margin-top: 40px;
+        }
+
+        footer p {
+            font-size: 14px;
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 30px;
+            }
+
+            header p {
+                font-size: 16px;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 5px 8px;
+                font-size: 14px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .section h2 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Arduino Experiment No. 2</h1>
+        <p>Servo Motor Control (Servo Angle Control)</p>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#details">Details</a>
+        <a href="#components">Components</a>
+        <a href="#connection">Connection</a>
+        <a href="#code">Arduino Code</a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+
+        <!-- Experiment Details -->
+        <section class="section" id="details">
+
+            <h2>Experiment Details</h2>
+
+            <div class="experiment-card">
+
+                <h3>Arduino Experiment No. 2</h3>
+
+                <p>
+                    <strong>Experiment Name:</strong>
+                    Servo Motor Control (Servo Angle Control)
+                </p>
+
+                <p>
+                    <strong>Controller:</strong>
+                    Arduino UNO
+                </p>
+
+                <p>
+                    <strong>Output Device:</strong>
+                    Servo Motor
+                </p>
+
+                <p>
+                    <strong>Programming Software:</strong>
+                    Arduino IDE
+                </p>
+
+                <p>
+                    <strong>Objective:</strong>
+                    To control the angle of a servo motor using an Arduino.
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- Components -->
+        <section class="section" id="components">
+
+            <h2>Required Components</h2>
+
+            <div class="experiment-card">
+
+                <p>Arduino UNO</p>
+                <p>Servo Motor</p>
+                <p>Jumper Wires</p>
+
+            </div>
+
+        </section>
+
+        <!-- Connection -->
+        <section class="section" id="connection">
+
+            <h2>Connections</h2>
+
+            <div class="experiment-card">
+
+                <p>
+                    Servo Signal Pin → Arduino Digital Pin 9
+                </p>
+
+                <p>
+                    Servo VCC → Arduino 5V
+                </p>
+
+                <p>
+                    Servo GND → Arduino GND
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- Arduino Code -->
+        <section class="section" id="code">
+
+            <h2>Arduino Code</h2>
+
+            <div class="experiment-card">
+
+<pre style="
+background-color:#e8f4fb;
+padding:20px;
+border-radius:6px;
+overflow-x:auto;
+font-size:15px;
+color:#172b4d;
+"><code>#include &lt;Servo.h&gt;
+
+Servo myservo;
+
+void setup() {
+    myservo.attach(9);
+}
+
+void loop() {
+
+    myservo.write(0);
+    delay(1000);
+
+    myservo.write(90);
+    delay(1000);
+
+    myservo.write(180);
+    delay(1000);
+}</code></pre>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+
+        <p>
+            IoT Experiments | SimuSoft Technologies
+        </p>
+
+    </footer>
+
+</body>
+
+</html>
