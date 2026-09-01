@@ -4,450 +4,272 @@
 <head>
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>IoT Experiments</title>
 
     <style>
 
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            margin: 0;
-            padding: 40px 20px;
-
             font-family: Arial, sans-serif;
-
-            background: #f4f7fa;
-            color: #1e293b;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 850px;
-            margin: auto;
+            background: #f4f6f9;
+            color: #333;
         }
 
         header {
+            background: #1f2937;
+            color: white;
             text-align: center;
-            margin-bottom: 35px;
+            padding: 30px 20px;
         }
 
         header h1 {
-            margin-bottom: 8px;
-
-            color: #075985;
-            font-size: 36px;
+            font-size: 32px;
+            margin-bottom: 10px;
         }
 
         header p {
-            margin: 0;
-
-            color: #64748b;
             font-size: 16px;
+            color: #d1d5db;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 40px 20px;
         }
 
         .section-title {
-            margin-top: 35px;
-            margin-bottom: 15px;
-
-            color: #0f172a;
-            font-size: 24px;
-
-            border-bottom: 2px solid #0284c7;
-
-            padding-bottom: 8px;
-        }
-
-        .experiment {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            gap: 15px;
-
-            margin-bottom: 12px;
-            padding: 18px 20px;
-
-            background: white;
-
-            border: 1px solid #dbe3ea;
-            border-radius: 8px;
-        }
-
-        .experiment-info h3 {
-            margin: 0 0 5px;
-
-            color: #0f172a;
-
-            font-size: 18px;
-        }
-
-        .experiment-info p {
-            margin: 0;
-
-            color: #64748b;
-
-            font-size: 14px;
-        }
-
-        .open-button {
-            display: inline-block;
-
-            min-width: 140px;
-
-            padding: 10px 16px;
-
             text-align: center;
-
-            color: white;
-            background: #0284c7;
-
-            text-decoration: none;
-
-            font-size: 14px;
-            font-weight: bold;
-
-            border-radius: 6px;
+            margin: 30px 0 25px;
+            font-size: 26px;
+            color: #1f2937;
         }
 
-        .open-button:hover {
-            background: #0369a1;
+        .experiment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h3 {
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .card a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+
+        .card a:hover {
+            background: #1d4ed8;
         }
 
         footer {
-            margin-top: 45px;
-
             text-align: center;
-
-            color: #94a3b8;
-
-            font-size: 14px;
-        }
-
-        @media (max-width: 600px) {
-
-            body {
-                padding: 25px 15px;
-            }
-
-            header h1 {
-                font-size: 29px;
-            }
-
-            .experiment {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .open-button {
-                width: 100%;
-            }
+            background: #1f2937;
+            color: white;
+            padding: 20px;
+            margin-top: 40px;
         }
 
     </style>
 
 </head>
 
-
 <body>
 
-    <main class="container">
+    <!-- Header -->
 
-        <header>
+    <header>
 
-            <h1>
-                IoT Experiments
-            </h1>
+        <h1>IoT Experiments</h1>
 
-            <p>
-                Arduino, ESP32-CAM and Raspberry Pi Experiments
-            </p>
+        <p>
+            Arduino | ESP32 | Raspberry Pi
+        </p>
 
-        </header>
+    </header>
 
 
-        <!-- ===================================== -->
-        <!-- ARDUINO EXPERIMENTS -->
-        <!-- ===================================== -->
-
-        <h2 class="section-title">
-            Arduino Experiments
-        </h2>
+    <div class="container">
 
 
-        <div class="experiment">
+        <!-- Arduino Section -->
 
-            <div class="experiment-info">
+        <h2 class="section-title">Arduino Experiments</h2>
 
-                <h3>
-                    Arduino Experiment No. 1
-                </h3>
+        <div class="experiment-grid">
 
-                <p>
-                    Arduino based IoT experiment
-                </p>
+            <div class="card">
+
+                <h3>Arduino Experiment No. 1</h3>
+
+                <a href="Arduino%20Exp%20No%201.html">
+                    Open Experiment
+                </a>
 
             </div>
 
-            <a
-                href="https://github.com/simusofttech/Arduino-Experiment-No-1"
-                class="open-button"
-            >
-                Open Experiment
-            </a>
 
-        </div>
+            <div class="card">
 
+                <h3>Arduino Experiment No. 2</h3>
 
-        <div class="experiment">
-
-            <div class="experiment-info">
-
-                <h3>
-                    Arduino Experiment No. 2
-                </h3>
-
-                <p>
-                    Arduino based IoT experiment
-                </p>
+                <a href="Arduino%20Exp%20No%202.html">
+                    Open Experiment
+                </a>
 
             </div>
 
-            <a
-                href="https://github.com/simusofttech/Arduino-Experiment-No-2"
-                class="open-button"
-            >
-                Open Experiment
-            </a>
 
-        </div>
+            <div class="card">
 
+                <h3>Arduino Experiment No. 3</h3>
 
-        <div class="experiment">
-
-            <div class="experiment-info">
-
-                <h3>
-                    Arduino Experiment No. 3
-                </h3>
-
-                <p>
-                    Arduino based IoT experiment
-                </p>
+                <a href="Arduino%20Exp%20No%203.html">
+                    Open Experiment
+                </a>
 
             </div>
-
-            <a
-                href="https://github.com/simusofttech/Arduino-Experiment-No-3"
-                class="open-button"
-            >
-                Open Experiment
-            </a>
 
         </div>
 
 
 
-        <!-- ===================================== -->
-        <!-- ESP32-CAM EXPERIMENTS -->
-        <!-- ===================================== -->
+        <!-- ESP Section -->
 
-        <h2 class="section-title">
-            ESP32-CAM Experiments
-        </h2>
+        <h2 class="section-title">ESP32 Experiments</h2>
 
+        <div class="experiment-grid">
 
-        <div class="experiment">
+            <div class="card">
 
-            <div class="experiment-info">
+                <h3>ESP Experiment No. 1</h3>
 
-                <h3>
-                    ESP32-CAM Experiment No. 1
-                </h3>
-
-                <p>
-                    ESP32-CAM based IoT experiment
-                </p>
+                <a href="ESP%20Exp%20No%201.html">
+                    Open Experiment
+                </a>
 
             </div>
 
-            <a
-                href="https://github.com/simusofttech/ESP32-CAM-Experiment-No-1"
-                class="open-button"
-            >
-                Open Experiment
-            </a>
 
-        </div>
+            <div class="card">
 
+                <h3>ESP Experiment No. 2</h3>
 
-        <div class="experiment">
-
-            <div class="experiment-info">
-
-                <h3>
-                    ESP32-CAM Experiment No. 2
-                </h3>
-
-                <p>
-                    ESP32-CAM based IoT experiment
-                </p>
+                <a href="ESP%20Exp%20No%202.html">
+                    Open Experiment
+                </a>
 
             </div>
 
-            <a
-                href="https://github.com/simusofttech/ESP32-CAM-Experiment-No-2"
-                class="open-button"
-            >
-                Open Experiment
-            </a>
 
-        </div>
+            <div class="card">
 
+                <h3>ESP Experiment No. 3</h3>
 
-        <div class="experiment">
-
-            <div class="experiment-info">
-
-                <h3>
-                    ESP32-CAM Experiment No. 3
-                </h3>
-
-                <p>
-                    ESP32-CAM based IoT experiment
-                </p>
+                <a href="ESP%20Exp%20No%203.html">
+                    Open Experiment
+                </a>
 
             </div>
 
-            <a
-                href="https://github.com/simusofttech/ESP32-CAM-Experiment-No-3"
-                class="open-button"
-            >
-                Open Experiment
-            </a>
 
-        </div>
+            <div class="card">
 
+                <h3>ESP Experiment No. 4</h3>
 
-        <div class="experiment">
-
-            <div class="experiment-info">
-
-                <h3>
-                    ESP32-CAM Experiment No. 4
-                </h3>
-
-                <p>
-                    ESP32-CAM based IoT experiment
-                </p>
+                <a href="ESP%20Exp%20No%204.html">
+                    Open Experiment
+                </a>
 
             </div>
-
-            <a
-                href="https://github.com/simusofttech/ESP32-CAM-Experiment-No-4"
-                class="open-button"
-            >
-                Open Experiment
-            </a>
 
         </div>
 
 
 
-        <!-- ===================================== -->
-        <!-- RASPBERRY PI EXPERIMENTS -->
-        <!-- ===================================== -->
+        <!-- Raspberry Pi Section -->
 
-        <h2 class="section-title">
-            Raspberry Pi Experiments
-        </h2>
+        <h2 class="section-title">Raspberry Pi Experiments</h2>
 
+        <div class="experiment-grid">
 
-        <div class="experiment">
+            <div class="card">
 
-            <div class="experiment-info">
+                <h3>Raspberry Pi Experiment No. 1</h3>
 
-                <h3>
-                    Raspberry Pi Experiment No. 1
-                </h3>
-
-                <p>
-                    Raspberry Pi based IoT experiment
-                </p>
+                <a href="R-Pi%20Exp%20No%201.html">
+                    Open Experiment
+                </a>
 
             </div>
 
-            <a
-                href="https://github.com/simusofttech/Raspberry-Pi-Experiment-No-1"
-                class="open-button"
-            >
-                Open Experiment
-            </a>
 
-        </div>
+            <div class="card">
 
+                <h3>Raspberry Pi Experiment No. 2</h3>
 
-        <div class="experiment">
-
-            <div class="experiment-info">
-
-                <h3>
-                    Raspberry Pi Experiment No. 2
-                </h3>
-
-                <p>
-                    Raspberry Pi based IoT experiment
-                </p>
+                <a href="R-Pi%20Exp%20No%202.html">
+                    Open Experiment
+                </a>
 
             </div>
 
-            <a
-                href="https://github.com/simusofttech/Raspberry-Pi-Experiment-No-2"
-                class="open-button"
-            >
-                Open Experiment
-            </a>
 
-        </div>
+            <div class="card">
 
+                <h3>Raspberry Pi Experiment No. 3</h3>
 
-        <div class="experiment">
-
-            <div class="experiment-info">
-
-                <h3>
-                    Raspberry Pi Experiment No. 3
-                </h3>
-
-                <p>
-                    Raspberry Pi based IoT experiment
-                </p>
+                <a href="R-Pi%20Exp%20No%203.html">
+                    Open Experiment
+                </a>
 
             </div>
 
-            <a
-                href="https://github.com/simusofttech/Raspberry-Pi-Experiment-No-3"
-                class="open-button"
-            >
-                Open Experiment
-            </a>
-
         </div>
 
+    </div>
 
-        <footer>
 
-            IoT Experiments
 
-        </footer>
+    <!-- Footer -->
 
-    </main>
+    <footer>
+
+        <p>
+            © 2026 SimuSoft Technologies | IoT Experiments
+        </p>
+
+    </footer>
+
 
 </body>
 
