@@ -2,16 +2,20 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Arduino Experiment No. 2 - Servo Motor Control</title>
 
     <style>
+
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
 
         html {
@@ -19,187 +23,471 @@
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #f4f8fc;
-            color: #172b4d;
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            color: #1e293b;
+
+            background: #f4f7fa;
+
             line-height: 1.6;
         }
 
-        /* Header */
+
+        /* =============================
+           HEADER
+        ============================= */
+
         header {
-            background-color: #0d5f89;
-            color: white;
+            padding: 35px 20px;
+
             text-align: center;
-            padding: 45px 20px;
+
+            color: white;
+
+            background: #075985;
         }
 
         header h1 {
-            font-size: 40px;
-            margin-bottom: 10px;
+            margin: 0 0 8px;
+
+            font-size: 34px;
         }
 
         header p {
-            font-size: 20px;
+            margin: 0;
+
+            color: #e0f2fe;
+
+            font-size: 16px;
         }
 
-        /* Navigation */
+
+        /* =============================
+           NAVIGATION
+        ============================= */
+
         nav {
-            background-color: white;
-            border-bottom: 1px solid #d8e3ed;
-            padding: 18px 10px;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            display: flex;
+
+            justify-content: center;
+
+            gap: 22px;
+
+            flex-wrap: wrap;
+
+            padding: 14px;
+
+            background: white;
+
+            border-bottom: 1px solid #dbe3ea;
         }
 
         nav a {
-            color: #005b87;
+            color: #075985;
+
             text-decoration: none;
-            font-size: 17px;
+
+            font-size: 14px;
+
             font-weight: bold;
-            margin: 0 18px;
         }
 
         nav a:hover {
-            color: #0089c9;
+            color: #0284c7;
         }
 
-        /* Main */
+
+        /* =============================
+           CONTAINER
+        ============================= */
+
         .container {
-            max-width: 1050px;
-            margin: 40px auto;
-            padding: 0 20px;
+            width: 90%;
+
+            max-width: 900px;
+
+            margin: auto;
+
+            padding: 35px 0;
         }
+
+
+        /* =============================
+           SECTIONS
+        ============================= */
 
         .section {
-            background-color: white;
-            border: 1px solid #d7e2ec;
-            border-radius: 10px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.04);
+            margin-bottom: 25px;
+
+            padding: 25px;
+
+            background: white;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 8px;
         }
 
         .section h2 {
-            color: #075e8c;
-            font-size: 30px;
-            border-bottom: 2px solid #d4eafa;
-            padding-bottom: 12px;
-            margin-bottom: 25px;
+            margin-top: 0;
+
+            padding-bottom: 8px;
+
+            color: #075985;
+
+            border-bottom: 2px solid #e0f2fe;
         }
 
-        /* Experiment Card */
-        .experiment-card {
-            background-color: #eef8fd;
-            border-left: 5px solid #0088cc;
-            border-radius: 7px;
-            padding: 25px;
-            transition: 0.3s ease;
-        }
 
-        .experiment-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 5px 15px rgba(0, 91, 135, 0.15);
-        }
+        /* =============================
+           PROJECT INFO
+        ============================= */
 
-        .experiment-card h3 {
-            color: #075e8c;
-            font-size: 23px;
-            margin-bottom: 10px;
-        }
+        .project-info {
+            padding: 16px;
 
-        .experiment-card p {
-            color: #334e68;
-            font-size: 17px;
-            margin-bottom: 18px;
-        }
+            background: #f0f9ff;
 
-        /* Button */
-        .btn {
-            display: inline-block;
-            background-color: #0078b5;
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
+            border-left: 4px solid #0284c7;
+
             border-radius: 5px;
-            font-size: 15px;
-            font-weight: bold;
-            transition: 0.3s ease;
         }
 
-        .btn:hover {
-            background-color: #005f8d;
+        .project-info p {
+            margin: 7px 0;
         }
 
-        /* Footer */
-        footer {
-            background-color: #0d5f89;
-            color: white;
+
+        /* =============================
+           COMPONENTS
+        ============================= */
+
+        .components {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+
+            margin-top: 20px;
+        }
+
+        .component-card {
+            padding: 18px;
+
             text-align: center;
-            padding: 22px;
-            margin-top: 40px;
+
+            background: #f8fafc;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 7px;
         }
 
-        footer p {
+        .component-card strong {
+            color: #075985;
+
+            font-size: 18px;
+        }
+
+        .component-card p {
+            margin-bottom: 0;
+        }
+
+
+        /* =============================
+           TABLE
+        ============================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            margin-top: 15px;
+
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+
+            border: 1px solid #cbd5e1;
+
+            text-align: left;
+        }
+
+        th {
+            color: white;
+
+            background: #075985;
+        }
+
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+
+        /* =============================
+           CIRCUIT DIAGRAM
+        ============================= */
+
+        .circuit {
+            margin-top: 20px;
+
+            text-align: center;
+        }
+
+        .circuit img {
+            width: 100%;
+
+            max-width: 650px;
+
+            height: auto;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 6px;
+        }
+
+
+        /* =============================
+           CODE
+        ============================= */
+
+        .code-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 10px 15px;
+
+            color: white;
+
+            background: #1e293b;
+
+            border-radius: 7px 7px 0 0;
+        }
+
+        .copy-button {
+            padding: 7px 12px;
+
+            color: white;
+
+            background: #0284c7;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+        }
+
+        .copy-button:hover {
+            background: #0369a1;
+        }
+
+        pre {
+            margin: 0;
+
+            padding: 20px;
+
+            overflow-x: auto;
+
+            color: #e2e8f0;
+
+            background: #0f172a;
+
+            border-radius: 0 0 7px 7px;
+
+            font-family: Consolas, monospace;
+
             font-size: 14px;
         }
 
-        /* Mobile */
+
+        /* =============================
+           NOTE
+        ============================= */
+
+        .note {
+            margin-top: 18px;
+
+            padding: 14px;
+
+            color: #854d0e;
+
+            background: #fef9c3;
+
+            border: 1px solid #fde047;
+
+            border-radius: 6px;
+        }
+
+
+        /* =============================
+           BACK BUTTON
+        ============================= */
+
+        .back-button {
+            display: inline-block;
+
+            padding: 10px 18px;
+
+            color: white;
+
+            background: #0284c7;
+
+            text-decoration: none;
+
+            border-radius: 6px;
+
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background: #0369a1;
+        }
+
+
+        /* =============================
+           FOOTER
+        ============================= */
+
+        footer {
+            margin-top: 30px;
+
+            padding: 20px;
+
+            text-align: center;
+
+            color: #64748b;
+
+            background: white;
+
+            border-top: 1px solid #dbe3ea;
+        }
+
+
+        /* =============================
+           MOBILE
+        ============================= */
+
         @media (max-width: 600px) {
 
             header h1 {
-                font-size: 30px;
+                font-size: 27px;
             }
 
-            header p {
-                font-size: 16px;
-            }
-
-            nav a {
-                display: inline-block;
-                margin: 5px 8px;
-                font-size: 14px;
+            .container {
+                width: 94%;
             }
 
             .section {
                 padding: 20px;
             }
 
-            .section h2 {
-                font-size: 25px;
+            .components {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                gap: 12px;
+
+                font-size: 13px;
             }
         }
+
     </style>
+
 </head>
+
 
 <body>
 
-    <!-- Header -->
+
+    <!-- =============================
+         HEADER
+    ============================= -->
+
     <header>
-        <h1>Arduino Experiment No. 2</h1>
-        <p>Servo Motor Control (Servo Angle Control)</p>
+
+        <h1>
+            Arduino Experiment No. 2
+        </h1>
+
+        <p>
+            Servo Motor Control (Servo Angle Control)
+        </p>
+
     </header>
 
-    <!-- Navigation -->
+
+
+    <!-- =============================
+         NAVIGATION
+    ============================= -->
+
     <nav>
-        <a href="#details">Details</a>
-        <a href="#components">Components</a>
-        <a href="#connection">Connection</a>
-        <a href="#code">Arduino Code</a>
+
+        <a href="#details">
+            Details
+        </a>
+
+        <a href="#components">
+            Components
+        </a>
+
+        <a href="#connections">
+            Connections
+        </a>
+
+        <a href="#circuit">
+            Circuit Diagram
+        </a>
+
+        <a href="#code">
+            Arduino Code
+        </a>
+
+        <a href="#steps">
+            Steps
+        </a>
+
     </nav>
 
-    <!-- Main Content -->
-    <div class="container">
 
-        <!-- Experiment Details -->
-        <section class="section" id="details">
 
-            <h2>Experiment Details</h2>
+    <main class="container">
 
-            <div class="experiment-card">
 
-                <h3>Arduino Experiment No. 2</h3>
+        <!-- =============================
+             PROJECT DETAILS
+        ============================= -->
+
+        <section
+            class="section"
+            id="details"
+        >
+
+            <h2>
+                Experiment Details
+            </h2>
+
+            <div class="project-info">
+
+                <p>
+                    <strong>Experiment:</strong>
+                    Arduino Experiment No. 2
+                </p>
 
                 <p>
                     <strong>Experiment Name:</strong>
@@ -223,99 +511,525 @@
 
                 <p>
                     <strong>Objective:</strong>
-                    To control the angle of a servo motor using an Arduino.
+                    To control the angle of a servo motor using
+                    Arduino by rotating it to different angles.
                 </p>
 
             </div>
 
         </section>
 
-        <!-- Components -->
-        <section class="section" id="components">
 
-            <h2>Required Components</h2>
 
-            <div class="experiment-card">
+        <!-- =============================
+             COMPONENTS
+        ============================= -->
 
-                <p>Arduino UNO</p>
-                <p>Servo Motor</p>
-                <p>Jumper Wires</p>
+        <section
+            class="section"
+            id="components"
+        >
+
+            <h2>
+                Required Components
+            </h2>
+
+            <div class="components">
+
+
+                <div class="component-card">
+
+                    <strong>
+                        Arduino UNO
+                    </strong>
+
+                    <p>
+                        Main controller used to control
+                        the servo motor.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        Servo Motor
+                    </strong>
+
+                    <p>
+                        Used to rotate to different
+                        specified angles.
+                    </p>
+
+                </div>
+
 
             </div>
 
         </section>
 
-        <!-- Connection -->
-        <section class="section" id="connection">
 
-            <h2>Connections</h2>
 
-            <div class="experiment-card">
+        <!-- =============================
+             CONNECTIONS
+        ============================= -->
 
-                <p>
-                    Servo Signal Pin → Arduino Digital Pin 9
-                </p>
+        <section
+            class="section"
+            id="connections"
+        >
 
-                <p>
-                    Servo VCC → Arduino 5V
-                </p>
+            <h2>
+                Circuit Connections
+            </h2>
 
-                <p>
-                    Servo GND → Arduino GND
-                </p>
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Component
+                            </th>
+
+                            <th>
+                                Pin
+                            </th>
+
+                            <th>
+                                Arduino Connection
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+                                Servo Motor
+                            </td>
+
+                            <td>
+                                Signal
+                            </td>
+
+                            <td>
+                                Digital Pin 9
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Servo Motor
+                            </td>
+
+                            <td>
+                                VCC
+                            </td>
+
+                            <td>
+                                5V
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Servo Motor
+                            </td>
+
+                            <td>
+                                GND
+                            </td>
+
+                            <td>
+                                GND
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="note">
+
+                The servo signal pin is connected to
+                Arduino digital pin 9 as specified in
+                the experiment program.
 
             </div>
 
         </section>
 
-        <!-- Arduino Code -->
-        <section class="section" id="code">
 
-            <h2>Arduino Code</h2>
 
-            <div class="experiment-card">
+        <!-- =============================
+             CIRCUIT DIAGRAM
+        ============================= -->
 
-<pre style="
-background-color:#e8f4fb;
-padding:20px;
-border-radius:6px;
-overflow-x:auto;
-font-size:15px;
-color:#172b4d;
-"><code>#include &lt;Servo.h&gt;
+        <section
+            class="section"
+            id="circuit"
+        >
+
+            <h2>
+                Circuit Diagram
+            </h2>
+
+            <p>
+
+                Connect the servo motor signal wire to
+                Arduino digital pin 9. Connect the power
+                and ground wires to the corresponding
+                Arduino supply pins.
+
+            </p>
+
+
+            <div class="circuit">
+
+                <img
+                    src="Servo_Motor_Circuit.png"
+                    alt="Arduino Servo Motor Circuit Diagram"
+                >
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             WORKING
+        ============================= -->
+
+        <section class="section">
+
+            <h2>
+                Working Principle
+            </h2>
+
+            <p>
+
+                The Servo library is included in the
+                Arduino program and a servo object is
+                created.
+
+            </p>
+
+            <p>
+
+                The servo signal is connected to
+                Arduino digital pin 9 using the
+                <strong>attach()</strong> function.
+
+            </p>
+
+            <p>
+
+                The program then rotates the servo motor
+                to <strong>0 degrees</strong> and waits
+                for one second.
+
+            </p>
+
+            <p>
+
+                It then rotates to
+                <strong>90 degrees</strong> and waits
+                for one second.
+
+            </p>
+
+            <p>
+
+                Finally, the servo rotates to
+                <strong>180 degrees</strong> and waits
+                for one second.
+
+            </p>
+
+            <p>
+
+                This process repeats continuously.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =============================
+             ARDUINO CODE
+        ============================= -->
+
+        <section
+            class="section"
+            id="code"
+        >
+
+            <h2>
+                Arduino Code
+            </h2>
+
+
+            <div class="code-header">
+
+                <span>
+                    servo_motor.ino
+                </span>
+
+                <button
+                    type="button"
+                    class="copy-button"
+                    onclick="copyCode('arduinoCode', this)"
+                >
+                    Copy Code
+                </button>
+
+            </div>
+
+
+            <pre><code id="arduinoCode">#include &lt;Servo.h&gt;
 
 Servo myservo;
 
 void setup() {
+
     myservo.attach(9);
+
 }
 
 void loop() {
 
     myservo.write(0);
+
     delay(1000);
 
     myservo.write(90);
+
     delay(1000);
 
     myservo.write(180);
+
     delay(1000);
+
 }</code></pre>
+
+
+            <div class="note">
+
+                The servo motor is programmed to move
+                sequentially to
+                <strong>0°</strong>,
+                <strong>90°</strong>,
+                and
+                <strong>180°</strong>,
+                with a one-second delay between each
+                position.
 
             </div>
 
         </section>
 
-    </div>
 
-    <!-- Footer -->
+
+        <!-- =============================
+             OPERATING STEPS
+        ============================= -->
+
+        <section
+            class="section"
+            id="steps"
+        >
+
+            <h2>
+                Steps to Perform the Experiment
+            </h2>
+
+            <ol>
+
+                <li>
+                    Connect the servo motor to the
+                    Arduino UNO.
+                </li>
+
+                <li>
+                    Connect the servo signal pin to
+                    Arduino digital pin 9.
+                </li>
+
+                <li>
+                    Connect the servo power and ground
+                    connections.
+                </li>
+
+                <li>
+                    Connect the Arduino UNO to the
+                    computer using the USB cable.
+                </li>
+
+                <li>
+                    Open Arduino IDE.
+                </li>
+
+                <li>
+                    Include the
+                    <strong>Servo.h</strong>
+                    library.
+                </li>
+
+                <li>
+                    Attach the servo signal to
+                    digital pin 9.
+                </li>
+
+                <li>
+                    Upload the program to the Arduino.
+                </li>
+
+                <li>
+                    Observe the servo motor movement.
+                </li>
+
+                <li>
+                    Verify that the servo rotates to
+                    0°, 90°, and 180° continuously.
+                </li>
+
+            </ol>
+
+        </section>
+
+
+
+        <!-- =============================
+             EXPECTED OUTPUT
+        ============================= -->
+
+        <section class="section">
+
+            <h2>
+                Expected Output
+            </h2>
+
+            <p>
+
+                The servo motor rotates to
+                <strong>0 degrees</strong>,
+                then to
+                <strong>90 degrees</strong>,
+                and finally to
+                <strong>180 degrees</strong>.
+
+            </p>
+
+            <p>
+
+                Each position is maintained for
+                approximately one second before moving
+                to the next position.
+
+            </p>
+
+            <p>
+
+                The sequence repeats continuously.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =============================
+             BACK BUTTON
+        ============================= -->
+
+        <a
+            href="index.html"
+            class="back-button"
+        >
+
+            ← Back to IoT Experiments
+
+        </a>
+
+
+    </main>
+
+
+
     <footer>
 
-        <p>
-            IoT Experiments | SimuSoft Technologies
-        </p>
+        Arduino Experiment No. 2 |
+        Servo Motor Control
 
     </footer>
+
+
+
+    <!-- =============================
+         JAVASCRIPT
+    ============================= -->
+
+    <script>
+
+        function copyCode(codeId, button) {
+
+            const code =
+                document.getElementById(codeId).innerText;
+
+            navigator.clipboard
+                .writeText(code)
+                .then(function () {
+
+                    const originalText =
+                        button.textContent;
+
+                    button.textContent =
+                        "Copied!";
+
+                    setTimeout(
+                        function () {
+
+                            button.textContent =
+                                originalText;
+
+                        },
+                        2000
+                    );
+
+                })
+                .catch(function () {
+
+                    alert(
+                        "Code could not be copied."
+                    );
+
+                });
+
+        }
+
+    </script>
+
 
 </body>
 
