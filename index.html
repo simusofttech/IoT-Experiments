@@ -3,109 +3,203 @@
 
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>IoT Experiments</title>
 
     <style>
-
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f9;
-            color: #333;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f8fc;
+            color: #172b4d;
+            line-height: 1.6;
         }
 
+        /* ================= HEADER ================= */
+
         header {
-            background: #1f2937;
+            background-color: #0d5f89;
             color: white;
             text-align: center;
-            padding: 30px 20px;
+            padding: 45px 20px;
         }
 
         header h1 {
-            font-size: 32px;
+            font-size: 42px;
             margin-bottom: 10px;
+            font-weight: 700;
         }
 
         header p {
-            font-size: 16px;
-            color: #d1d5db;
+            font-size: 20px;
+            margin-top: 5px;
         }
+
+        /* ================= NAVIGATION ================= */
+
+        nav {
+            background-color: white;
+            border-bottom: 1px solid #d8e3ed;
+            padding: 18px 10px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav a {
+            color: #005b87;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: bold;
+            margin: 0 18px;
+        }
+
+        nav a:hover {
+            color: #0089c9;
+        }
+
+        /* ================= MAIN CONTAINER ================= */
 
         .container {
-            max-width: 1100px;
-            margin: auto;
-            padding: 40px 20px;
+            max-width: 1050px;
+            margin: 40px auto;
+            padding: 0 20px;
         }
 
-        .section-title {
-            text-align: center;
-            margin: 30px 0 25px;
-            font-size: 26px;
-            color: #1f2937;
+        /* ================= SECTION ================= */
+
+        .section {
+            background-color: white;
+            border: 1px solid #d7e2ec;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.04);
         }
+
+        .section h2 {
+            color: #075e8c;
+            font-size: 30px;
+            border-bottom: 2px solid #d4eafa;
+            padding-bottom: 12px;
+            margin-bottom: 25px;
+        }
+
+        /* ================= EXPERIMENT GRID ================= */
 
         .experiment-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
             gap: 20px;
         }
 
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            transition: 0.3s;
+        /* ================= EXPERIMENT CARD ================= */
+
+        .experiment-card {
+            background-color: #eef8fd;
+            border-left: 5px solid #0088cc;
+            border-radius: 7px;
+            padding: 22px;
+            transition: 0.3s ease;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+        .experiment-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 5px 15px rgba(0, 91, 135, 0.15);
         }
 
-        .card h3 {
-            margin-bottom: 20px;
+        .experiment-card h3 {
+            color: #075e8c;
             font-size: 20px;
+            margin-bottom: 8px;
         }
 
-        .card a {
+        .experiment-card p {
+            color: #4d5d6d;
+            margin-bottom: 16px;
+            font-size: 15px;
+        }
+
+        /* ================= BUTTON ================= */
+
+        .btn {
             display: inline-block;
-            padding: 10px 20px;
-            background: #2563eb;
+            background-color: #0078b5;
             color: white;
             text-decoration: none;
-            border-radius: 6px;
-            transition: 0.3s;
+            padding: 9px 18px;
+            border-radius: 5px;
+            font-size: 15px;
+            font-weight: bold;
+            transition: 0.3s ease;
         }
 
-        .card a:hover {
-            background: #1d4ed8;
+        .btn:hover {
+            background-color: #005f8d;
         }
+
+        /* ================= FOOTER ================= */
 
         footer {
-            text-align: center;
-            background: #1f2937;
+            background-color: #0d5f89;
             color: white;
-            padding: 20px;
+            text-align: center;
+            padding: 22px;
             margin-top: 40px;
+        }
+
+        footer p {
+            font-size: 14px;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 30px;
+            }
+
+            header p {
+                font-size: 16px;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 5px 8px;
+                font-size: 14px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .section h2 {
+                font-size: 25px;
+            }
+
         }
 
     </style>
 
 </head>
 
+
 <body>
 
-    <!-- Header -->
+
+    <!-- ================= HEADER ================= -->
 
     <header>
 
@@ -118,154 +212,244 @@
     </header>
 
 
+    <!-- ================= NAVIGATION ================= -->
+
+    <nav>
+
+        <a href="#arduino">Arduino</a>
+
+        <a href="#esp32">ESP32</a>
+
+        <a href="#raspberry">Raspberry Pi</a>
+
+    </nav>
+
+
+    <!-- ================= MAIN ================= -->
+
     <div class="container">
 
 
-        <!-- Arduino Section -->
+        <!-- ================= ARDUINO ================= -->
 
-        <h2 class="section-title">Arduino Experiments</h2>
+        <section class="section" id="arduino">
 
-        <div class="experiment-grid">
+            <h2>Arduino Experiments</h2>
 
-            <div class="card">
-
-                <h3>Arduino Experiment No. 1</h3>
-
-                <a href="Arduino%20Exp%20No%201.html">
-                    Open Experiment
-                </a>
-
-            </div>
+            <div class="experiment-grid">
 
 
-            <div class="card">
+                <div class="experiment-card">
 
-                <h3>Arduino Experiment No. 2</h3>
+                    <h3>Arduino Experiment No. 1</h3>
 
-                <a href="Arduino%20Exp%20No%202.html">
-                    Open Experiment
-                </a>
+                    <p>
+                        LED Blinking Using Arduino UNO
+                    </p>
 
-            </div>
+                    <a
+                        href="Arduino%20Exp%20No%201.html"
+                        class="btn">
+                        Open Experiment
+                    </a>
 
-
-            <div class="card">
-
-                <h3>Arduino Experiment No. 3</h3>
-
-                <a href="Arduino%20Exp%20No%203.html">
-                    Open Experiment
-                </a>
-
-            </div>
-
-        </div>
+                </div>
 
 
+                <div class="experiment-card">
 
-        <!-- ESP Section -->
+                    <h3>Arduino Experiment No. 2</h3>
 
-        <h2 class="section-title">ESP32 Experiments</h2>
+                    <p>
+                        Arduino Experiment No. 2
+                    </p>
 
-        <div class="experiment-grid">
+                    <a
+                        href="Arduino%20Exp%20No%202.html"
+                        class="btn">
+                        Open Experiment
+                    </a>
 
-            <div class="card">
-
-                <h3>ESP Experiment No. 1</h3>
-
-                <a href="ESP%20Exp%20No%201.html">
-                    Open Experiment
-                </a>
-
-            </div>
+                </div>
 
 
-            <div class="card">
+                <div class="experiment-card">
 
-                <h3>ESP Experiment No. 2</h3>
+                    <h3>Arduino Experiment No. 3</h3>
 
-                <a href="ESP%20Exp%20No%202.html">
-                    Open Experiment
-                </a>
+                    <p>
+                        Arduino Experiment No. 3
+                    </p>
+
+                    <a
+                        href="Arduino%20Exp%20No%203.html"
+                        class="btn">
+                        Open Experiment
+                    </a>
+
+                </div>
 
             </div>
 
+        </section>
 
-            <div class="card">
 
-                <h3>ESP Experiment No. 3</h3>
 
-                <a href="ESP%20Exp%20No%203.html">
-                    Open Experiment
-                </a>
+        <!-- ================= ESP32 ================= -->
+
+        <section class="section" id="esp32">
+
+            <h2>ESP32 Experiments</h2>
+
+            <div class="experiment-grid">
+
+
+                <div class="experiment-card">
+
+                    <h3>ESP Experiment No. 1</h3>
+
+                    <p>
+                        ESP32 Experiment No. 1
+                    </p>
+
+                    <a
+                        href="ESP%20Exp%20No%201.html"
+                        class="btn">
+                        Open Experiment
+                    </a>
+
+                </div>
+
+
+                <div class="experiment-card">
+
+                    <h3>ESP Experiment No. 2</h3>
+
+                    <p>
+                        ESP32 Experiment No. 2
+                    </p>
+
+                    <a
+                        href="ESP%20Exp%20No%202.html"
+                        class="btn">
+                        Open Experiment
+                    </a>
+
+                </div>
+
+
+                <div class="experiment-card">
+
+                    <h3>ESP Experiment No. 3</h3>
+
+                    <p>
+                        ESP32 Experiment No. 3
+                    </p>
+
+                    <a
+                        href="ESP%20Exp%20No%203.html"
+                        class="btn">
+                        Open Experiment
+                    </a>
+
+                </div>
+
+
+                <div class="experiment-card">
+
+                    <h3>ESP Experiment No. 4</h3>
+
+                    <p>
+                        ESP32 Experiment No. 4
+                    </p>
+
+                    <a
+                        href="ESP%20Exp%20No%204.html"
+                        class="btn">
+                        Open Experiment
+                    </a>
+
+                </div>
 
             </div>
 
+        </section>
 
-            <div class="card">
 
-                <h3>ESP Experiment No. 4</h3>
 
-                <a href="ESP%20Exp%20No%204.html">
-                    Open Experiment
-                </a>
+        <!-- ================= RASPBERRY PI ================= -->
+
+        <section class="section" id="raspberry">
+
+            <h2>Raspberry Pi Experiments</h2>
+
+            <div class="experiment-grid">
+
+
+                <div class="experiment-card">
+
+                    <h3>Raspberry Pi Experiment No. 1</h3>
+
+                    <p>
+                        Raspberry Pi Experiment No. 1
+                    </p>
+
+                    <a
+                        href="R-Pi%20Exp%20No%201.html"
+                        class="btn">
+                        Open Experiment
+                    </a>
+
+                </div>
+
+
+                <div class="experiment-card">
+
+                    <h3>Raspberry Pi Experiment No. 2</h3>
+
+                    <p>
+                        Raspberry Pi Experiment No. 2
+                    </p>
+
+                    <a
+                        href="R-Pi%20Exp%20No%202.html"
+                        class="btn">
+                        Open Experiment
+                    </a>
+
+                </div>
+
+
+                <div class="experiment-card">
+
+                    <h3>Raspberry Pi Experiment No. 3</h3>
+
+                    <p>
+                        Raspberry Pi Experiment No. 3
+                    </p>
+
+                    <a
+                        href="R-Pi%20Exp%20No%203.html"
+                        class="btn">
+                        Open Experiment
+                    </a>
+
+                </div>
 
             </div>
 
-        </div>
+        </section>
 
-
-
-        <!-- Raspberry Pi Section -->
-
-        <h2 class="section-title">Raspberry Pi Experiments</h2>
-
-        <div class="experiment-grid">
-
-            <div class="card">
-
-                <h3>Raspberry Pi Experiment No. 1</h3>
-
-                <a href="R-Pi%20Exp%20No%201.html">
-                    Open Experiment
-                </a>
-
-            </div>
-
-
-            <div class="card">
-
-                <h3>Raspberry Pi Experiment No. 2</h3>
-
-                <a href="R-Pi%20Exp%20No%202.html">
-                    Open Experiment
-                </a>
-
-            </div>
-
-
-            <div class="card">
-
-                <h3>Raspberry Pi Experiment No. 3</h3>
-
-                <a href="R-Pi%20Exp%20No%203.html">
-                    Open Experiment
-                </a>
-
-            </div>
-
-        </div>
 
     </div>
 
 
-
-    <!-- Footer -->
+    <!-- ================= FOOTER ================= -->
 
     <footer>
 
         <p>
-            © 2026 SimuSoft Technologies | IoT Experiments
+            IoT Experiments | SimuSoft Technologies
         </p>
 
     </footer>
