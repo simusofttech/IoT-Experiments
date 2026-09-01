@@ -1,1 +1,1505 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ESP32-CAM Experiment No. 2 - WiFi Camera Server</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            color: #1e293b;
+
+            background: #f4f7fa;
+
+            line-height: 1.6;
+        }
+
+
+        /* =============================
+           HEADER
+        ============================= */
+
+        header {
+            padding: 35px 20px;
+
+            text-align: center;
+
+            color: white;
+
+            background: #075985;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+
+            font-size: 34px;
+        }
+
+        header p {
+            margin: 0;
+
+            color: #e0f2fe;
+
+            font-size: 16px;
+        }
+
+
+        /* =============================
+           NAVIGATION
+        ============================= */
+
+        nav {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 22px;
+
+            flex-wrap: wrap;
+
+            padding: 14px;
+
+            background: white;
+
+            border-bottom: 1px solid #dbe3ea;
+        }
+
+        nav a {
+            color: #075985;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #0284c7;
+        }
+
+
+        /* =============================
+           CONTAINER
+        ============================= */
+
+        .container {
+            width: 90%;
+
+            max-width: 900px;
+
+            margin: auto;
+
+            padding: 35px 0;
+        }
+
+
+        /* =============================
+           SECTIONS
+        ============================= */
+
+        .section {
+            margin-bottom: 25px;
+
+            padding: 25px;
+
+            background: white;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 8px;
+        }
+
+        .section h2 {
+            margin-top: 0;
+
+            padding-bottom: 8px;
+
+            color: #075985;
+
+            border-bottom: 2px solid #e0f2fe;
+        }
+
+
+        /* =============================
+           PROJECT INFO
+        ============================= */
+
+        .project-info {
+            padding: 16px;
+
+            background: #f0f9ff;
+
+            border-left: 4px solid #0284c7;
+
+            border-radius: 5px;
+        }
+
+        .project-info p {
+            margin: 7px 0;
+        }
+
+
+        /* =============================
+           COMPONENTS
+        ============================= */
+
+        .components {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+
+            margin-top: 20px;
+        }
+
+        .component-card {
+            padding: 18px;
+
+            text-align: center;
+
+            background: #f8fafc;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 7px;
+        }
+
+        .component-card strong {
+            color: #075985;
+
+            font-size: 18px;
+        }
+
+        .component-card p {
+            margin-bottom: 0;
+        }
+
+
+        /* =============================
+           TABLE
+        ============================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            margin-top: 15px;
+
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+
+            border: 1px solid #cbd5e1;
+
+            text-align: left;
+        }
+
+        th {
+            color: white;
+
+            background: #075985;
+        }
+
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+
+        /* =============================
+           CIRCUIT / IMAGE
+        ============================= */
+
+        .circuit {
+            margin-top: 20px;
+
+            text-align: center;
+        }
+
+        .circuit img {
+            width: 100%;
+
+            max-width: 650px;
+
+            height: auto;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 6px;
+        }
+
+
+        /* =============================
+           CODE
+        ============================= */
+
+        .code-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 10px 15px;
+
+            color: white;
+
+            background: #1e293b;
+
+            border-radius: 7px 7px 0 0;
+        }
+
+        .copy-button {
+            padding: 7px 12px;
+
+            color: white;
+
+            background: #0284c7;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+        }
+
+        .copy-button:hover {
+            background: #0369a1;
+        }
+
+        pre {
+            margin: 0;
+
+            padding: 20px;
+
+            overflow-x: auto;
+
+            color: #e2e8f0;
+
+            background: #0f172a;
+
+            border-radius: 0 0 7px 7px;
+
+            font-family: Consolas, monospace;
+
+            font-size: 14px;
+        }
+
+
+        /* =============================
+           NOTE
+        ============================= */
+
+        .note {
+            margin-top: 18px;
+
+            padding: 14px;
+
+            color: #854d0e;
+
+            background: #fef9c3;
+
+            border: 1px solid #fde047;
+
+            border-radius: 6px;
+        }
+
+
+        /* =============================
+           BACK BUTTON
+        ============================= */
+
+        .back-button {
+            display: inline-block;
+
+            padding: 10px 18px;
+
+            color: white;
+
+            background: #0284c7;
+
+            text-decoration: none;
+
+            border-radius: 6px;
+
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background: #0369a1;
+        }
+
+
+        /* =============================
+           FOOTER
+        ============================= */
+
+        footer {
+            margin-top: 30px;
+
+            padding: 20px;
+
+            text-align: center;
+
+            color: #64748b;
+
+            background: white;
+
+            border-top: 1px solid #dbe3ea;
+        }
+
+
+        /* =============================
+           MOBILE
+        ============================= */
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 27px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .components {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                gap: 12px;
+
+                font-size: 13px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =============================
+         HEADER
+    ============================= -->
+
+    <header>
+
+        <h1>
+            ESP32-CAM Experiment No. 2
+        </h1>
+
+        <p>
+            WiFi Camera Server and Live Video Streaming
+        </p>
+
+    </header>
+
+
+
+    <!-- =============================
+         NAVIGATION
+    ============================= -->
+
+    <nav>
+
+        <a href="#details">
+            Details
+        </a>
+
+        <a href="#components">
+            Components
+        </a>
+
+        <a href="#connections">
+            Connections
+        </a>
+
+        <a href="#circuit">
+            Circuit Diagram
+        </a>
+
+        <a href="#working">
+            Working
+        </a>
+
+        <a href="#code">
+            Arduino Code
+        </a>
+
+        <a href="#steps">
+            Steps
+        </a>
+
+    </nav>
+
+
+
+    <main class="container">
+
+
+        <!-- =============================
+             PROJECT DETAILS
+        ============================= -->
+
+        <section
+            class="section"
+            id="details"
+        >
+
+            <h2>
+                Experiment Details
+            </h2>
+
+            <div class="project-info">
+
+                <p>
+                    <strong>Experiment:</strong>
+                    ESP32-CAM Experiment No. 2
+                </p>
+
+                <p>
+                    <strong>Experiment Name:</strong>
+                    WiFi Camera Server and Live Video Streaming
+                </p>
+
+                <p>
+                    <strong>Controller:</strong>
+                    ESP32-CAM AI-THINKER
+                </p>
+
+                <p>
+                    <strong>Camera Model:</strong>
+                    AI-THINKER
+                </p>
+
+                <p>
+                    <strong>Communication:</strong>
+                    WiFi
+                </p>
+
+                <p>
+                    <strong>Image Format:</strong>
+                    JPEG
+                </p>
+
+                <p>
+                    <strong>Programming Software:</strong>
+                    Arduino IDE
+                </p>
+
+                <p>
+                    <strong>Objective:</strong>
+                    To configure the ESP32-CAM, connect it
+                    to a WiFi network, start the camera
+                    server, and access the camera stream
+                    through the ESP32-CAM IP address.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             COMPONENTS
+        ============================= -->
+
+        <section
+            class="section"
+            id="components"
+        >
+
+            <h2>
+                Required Components
+            </h2>
+
+            <div class="components">
+
+
+                <div class="component-card">
+
+                    <strong>
+                        ESP32-CAM AI-THINKER
+                    </strong>
+
+                    <p>
+                        Main controller and camera module
+                        used for image capture and streaming.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        Camera Module
+                    </strong>
+
+                    <p>
+                        Captures images and video for the
+                        live camera stream.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        WiFi Network
+                    </strong>
+
+                    <p>
+                        Provides wireless communication
+                        between the ESP32-CAM and computer.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        USB / Serial Programmer
+                    </strong>
+
+                    <p>
+                        Used to upload the program to the
+                        ESP32-CAM.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             CONNECTIONS
+        ============================= -->
+
+        <section
+            class="section"
+            id="connections"
+        >
+
+            <h2>
+                Camera Connections
+            </h2>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Signal
+                            </th>
+
+                            <th>
+                                ESP32-CAM Pin
+                            </th>
+
+                            <th>
+                                Purpose
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+                                D0
+                            </td>
+
+                            <td>
+                                Y2_GPIO_NUM
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                D1
+                            </td>
+
+                            <td>
+                                Y3_GPIO_NUM
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                D2
+                            </td>
+
+                            <td>
+                                Y4_GPIO_NUM
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                D3
+                            </td>
+
+                            <td>
+                                Y5_GPIO_NUM
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                D4
+                            </td>
+
+                            <td>
+                                Y6_GPIO_NUM
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                D5
+                            </td>
+
+                            <td>
+                                Y7_GPIO_NUM
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                D6
+                            </td>
+
+                            <td>
+                                Y8_GPIO_NUM
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                D7
+                            </td>
+
+                            <td>
+                                Y9_GPIO_NUM
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                XCLK
+                            </td>
+
+                            <td>
+                                XCLK_GPIO_NUM
+                            </td>
+
+                            <td>
+                                Camera clock
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                PCLK
+                            </td>
+
+                            <td>
+                                PCLK_GPIO_NUM
+                            </td>
+
+                            <td>
+                                Pixel clock
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                VSYNC
+                            </td>
+
+                            <td>
+                                VSYNC_GPIO_NUM
+                            </td>
+
+                            <td>
+                                Frame synchronization
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                HREF
+                            </td>
+
+                            <td>
+                                HREF_GPIO_NUM
+                            </td>
+
+                            <td>
+                                Horizontal reference
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                SIOD
+                            </td>
+
+                            <td>
+                                SIOD_GPIO_NUM
+                            </td>
+
+                            <td>
+                                Camera control data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                SIOC
+                            </td>
+
+                            <td>
+                                SIOC_GPIO_NUM
+                            </td>
+
+                            <td>
+                                Camera control clock
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             CIRCUIT / SETUP
+        ============================= -->
+
+        <section
+            class="section"
+            id="circuit"
+        >
+
+            <h2>
+                Camera Setup
+            </h2>
+
+            <p>
+
+                Select the
+                <strong>
+                    CAMERA_MODEL_AI_THINKER
+                </strong>
+                option in the program and use the
+                corresponding camera pin definitions from
+                <strong>camera_pins.h</strong>.
+
+            </p>
+
+
+            <div class="circuit">
+
+                <img
+                    src="ESP32_CAM_Camera_Setup.png"
+                    alt="ESP32-CAM Camera Setup"
+                >
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             WORKING
+        ============================= -->
+
+        <section
+            class="section"
+            id="working"
+        >
+
+            <h2>
+                Working Principle
+            </h2>
+
+            <p>
+
+                The program first initializes serial
+                communication at
+                <strong>115200 baud</strong>.
+
+            </p>
+
+            <p>
+
+                The ESP32-CAM camera is configured using
+                the camera configuration structure and
+                the AI-THINKER camera pin definitions.
+
+            </p>
+
+            <p>
+
+                The camera is configured to capture images
+                in <strong>JPEG</strong> format.
+
+            </p>
+
+            <p>
+
+                If PSRAM is available, the camera uses
+                QVGA resolution of
+                <strong>320 × 240</strong> pixels.
+
+            </p>
+
+            <p>
+
+                The program then initializes the camera
+                and applies sensor settings such as
+                brightness, contrast, saturation, white
+                balance, gain control, and exposure control.
+
+            </p>
+
+            <p>
+
+                The ESP32-CAM is then connected to the
+                configured WiFi network.
+
+            </p>
+
+            <p>
+
+                After the WiFi connection is established,
+                the camera server is started.
+
+            </p>
+
+            <p>
+
+                The ESP32-CAM local IP address is displayed
+                on the Serial Monitor. This IP address can
+                be entered into a browser to access the
+                camera server.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =============================
+             ARDUINO CODE
+        ============================= -->
+
+        <section
+            class="section"
+            id="code"
+        >
+
+            <h2>
+                Arduino Code
+            </h2>
+
+
+            <div class="code-header">
+
+                <span>
+                    esp32_cam_camera_server.ino
+                </span>
+
+                <button
+                    type="button"
+                    class="copy-button"
+                    onclick="copyCode('arduinoCode', this)"
+                >
+                    Copy Code
+                </button>
+
+            </div>
+
+
+            <pre><code id="arduinoCode">#include "esp_camera.h"
+
+#include &lt;WiFi.h&gt;
+
+// =================== CAMERA MODEL ===================
+
+#define CAMERA_MODEL_AI_THINKER
+
+#include "camera_pins.h"
+
+// =================== WIFI CONFIG ====================
+
+const char* ssid =
+"YOUR_WIFI_NAME";
+
+const char* password =
+"YOUR_WIFI_PASSWORD";
+
+void startCameraServer();
+
+// =================== SETUP FUNCTION ===================
+
+void setup() {
+
+    Serial.begin(115200);
+
+    Serial.setDebugOutput(false);
+
+    Serial.println();
+
+    // =================== CAMERA CONFIG ===================
+
+    camera_config_t config;
+
+    config.ledc_channel = LEDC_CHANNEL_0;
+
+    config.ledc_timer = LEDC_TIMER_0;
+
+    config.pin_d0 = Y2_GPIO_NUM;
+
+    config.pin_d1 = Y3_GPIO_NUM;
+
+    config.pin_d2 = Y4_GPIO_NUM;
+
+    config.pin_d3 = Y5_GPIO_NUM;
+
+    config.pin_d4 = Y6_GPIO_NUM;
+
+    config.pin_d5 = Y7_GPIO_NUM;
+
+    config.pin_d6 = Y8_GPIO_NUM;
+
+    config.pin_d7 = Y9_GPIO_NUM;
+
+    config.pin_xclk = XCLK_GPIO_NUM;
+
+    config.pin_pclk = PCLK_GPIO_NUM;
+
+    config.pin_vsync = VSYNC_GPIO_NUM;
+
+    config.pin_href = HREF_GPIO_NUM;
+
+    config.pin_sscb_sda = SIOD_GPIO_NUM;
+
+    config.pin_sscb_scl = SIOC_GPIO_NUM;
+
+    config.pin_pwdn = PWDN_GPIO_NUM;
+
+    config.pin_reset = RESET_GPIO_NUM;
+
+    config.xclk_freq_hz = 20000000;
+
+    config.pixel_format = PIXFORMAT_JPEG;
+
+    // =================== STREAM OPTIMIZATION ===================
+
+    if (psramFound()) {
+
+        config.frame_size = FRAMESIZE_QVGA;
+
+        config.jpeg_quality = 12;
+
+        config.fb_count = 1;
+
+    }
+
+    else {
+
+        config.frame_size = FRAMESIZE_QQVGA;
+
+        config.jpeg_quality = 15;
+
+        config.fb_count = 1;
+
+    }
+
+    // =================== INIT CAMERA ===================
+
+    esp_err_t err = esp_camera_init(&amp;config);
+
+    if (err != ESP_OK) {
+
+        Serial.printf(
+            "Camera init failed: 0x%x\n",
+            err
+        );
+
+        return;
+
+    }
+
+    // =================== SENSOR TUNING ===================
+
+    sensor_t * s =
+        esp_camera_sensor_get();
+
+    s-&gt;set_framesize(
+        s,
+        FRAMESIZE_QVGA
+    );
+
+    s-&gt;set_quality(
+        s,
+        12
+    );
+
+    s-&gt;set_brightness(
+        s,
+        0
+    );
+
+    s-&gt;set_contrast(
+        s,
+        0
+    );
+
+    s-&gt;set_saturation(
+        s,
+        -1
+    );
+
+    s-&gt;set_whitebal(
+        s,
+        1
+    );
+
+    s-&gt;set_gain_ctrl(
+        s,
+        1
+    );
+
+    s-&gt;set_exposure_ctrl(
+        s,
+        1
+    );
+
+    if (s-&gt;id.PID == OV3660_PID) {
+
+        s-&gt;set_vflip(
+            s,
+            1
+        );
+
+    }
+
+    // =================== WIFI SETUP ===================
+
+    WiFi.mode(WIFI_STA);
+
+    WiFi.setSleep(false);
+
+    WiFi.begin(
+        ssid,
+        password
+    );
+
+    Serial.print(
+        "Connecting to WiFi"
+    );
+
+    while (
+        WiFi.status() != WL_CONNECTED
+    ) {
+
+        delay(300);
+
+        Serial.print(".");
+
+    }
+
+    Serial.println(
+        "\nWiFi connected"
+    );
+
+    // =================== START SERVER ===================
+
+    startCameraServer();
+
+    Serial.print(
+        "Camera Stream Ready! Visit: http://"
+    );
+
+    Serial.println(
+        WiFi.localIP()
+    );
+
+}
+
+// =================== LOOP FUNCTION ===================
+
+void loop() {
+
+    delay(1);
+
+}</code></pre>
+
+
+            <div class="note">
+
+                Replace
+                <strong>YOUR_WIFI_NAME</strong>
+                and
+                <strong>YOUR_WIFI_PASSWORD</strong>
+                with the WiFi credentials you want to use
+                before uploading the program.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             OPERATING STEPS
+        ============================= -->
+
+        <section
+            class="section"
+            id="steps"
+        >
+
+            <h2>
+                Steps to Perform the Experiment
+            </h2>
+
+            <ol>
+
+                <li>
+                    Connect the ESP32-CAM to the computer
+                    using a suitable programming interface.
+                </li>
+
+                <li>
+                    Open Arduino IDE.
+                </li>
+
+                <li>
+                    Select the
+                    <strong>
+                        AI Thinker ESP32-CAM
+                    </strong>
+                    board.
+                </li>
+
+                <li>
+                    Include the required
+                    <strong>
+                        esp_camera.h
+                    </strong>
+                    and
+                    <strong>
+                        WiFi.h
+                    </strong>
+                    libraries.
+                </li>
+
+                <li>
+                    Select
+                    <strong>
+                        CAMERA_MODEL_AI_THINKER
+                    </strong>.
+                </li>
+
+                <li>
+                    Enter the correct WiFi SSID and
+                    password in the program.
+                </li>
+
+                <li>
+                    Upload the program to the ESP32-CAM.
+                </li>
+
+                <li>
+                    Open the Serial Monitor and set the
+                    baud rate to
+                    <strong>
+                        115200
+                    </strong>.
+                </li>
+
+                <li>
+                    Wait for the ESP32-CAM to connect to
+                    the WiFi network.
+                </li>
+
+                <li>
+                    Note the IP address displayed in the
+                    Serial Monitor.
+                </li>
+
+                <li>
+                    Enter the displayed IP address in a
+                    web browser connected to the same
+                    network.
+                </li>
+
+                <li>
+                    Access the camera server and view the
+                    camera stream.
+
+                </li>
+
+            </ol>
+
+        </section>
+
+
+
+        <!-- =============================
+             EXPECTED OUTPUT
+        ============================= -->
+
+        <section class="section">
+
+            <h2>
+                Expected Output
+            </h2>
+
+            <p>
+
+                The ESP32-CAM successfully connects to the
+                configured WiFi network.
+
+            </p>
+
+            <p>
+
+                The Serial Monitor displays:
+
+            </p>
+
+            <p>
+                <strong>
+                    WiFi connected
+                </strong>
+            </p>
+
+            <p>
+
+                The local IP address of the ESP32-CAM is
+                then displayed.
+
+            </p>
+
+            <p>
+
+                Opening this IP address in a browser
+                provides access to the ESP32-CAM camera
+                server and live camera stream.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =============================
+             BACK BUTTON
+        ============================= -->
+
+        <a
+            href="index.html"
+            class="back-button"
+        >
+
+            ← Back to IoT Experiments
+
+        </a>
+
+
+    </main>
+
+
+
+    <footer>
+
+        ESP32-CAM Experiment No. 2 |
+        WiFi Camera Server
+
+    </footer>
+
+
+
+    <!-- =============================
+         JAVASCRIPT
+    ============================= -->
+
+    <script>
+
+        function copyCode(codeId, button) {
+
+            const code =
+                document.getElementById(codeId).innerText;
+
+            navigator.clipboard
+                .writeText(code)
+                .then(function () {
+
+                    const originalText =
+                        button.textContent;
+
+                    button.textContent =
+                        "Copied!";
+
+                    setTimeout(
+                        function () {
+
+                            button.textContent =
+                                originalText;
+
+                        },
+                        2000
+                    );
+
+                })
+                .catch(function () {
+
+                    alert(
+                        "Code could not be copied."
+                    );
+
+                });
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
