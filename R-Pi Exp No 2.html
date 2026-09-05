@@ -1,1 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Raspberry Pi Experiment No. 2 - DHT11 with Blynk</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            color: #1e293b;
+
+            background: #f4f7fa;
+
+            line-height: 1.6;
+        }
+
+
+        /* =============================
+           HEADER
+        ============================= */
+
+        header {
+            padding: 35px 20px;
+
+            text-align: center;
+
+            color: white;
+
+            background: #075985;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+
+            font-size: 34px;
+        }
+
+        header p {
+            margin: 0;
+
+            color: #e0f2fe;
+
+            font-size: 16px;
+        }
+
+
+        /* =============================
+           NAVIGATION
+        ============================= */
+
+        nav {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 22px;
+
+            flex-wrap: wrap;
+
+            padding: 14px;
+
+            background: white;
+
+            border-bottom: 1px solid #dbe3ea;
+        }
+
+        nav a {
+            color: #075985;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #0284c7;
+        }
+
+
+        /* =============================
+           CONTAINER
+        ============================= */
+
+        .container {
+            width: 90%;
+
+            max-width: 900px;
+
+            margin: auto;
+
+            padding: 35px 0;
+        }
+
+
+        /* =============================
+           SECTIONS
+        ============================= */
+
+        .section {
+            margin-bottom: 25px;
+
+            padding: 25px;
+
+            background: white;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 8px;
+        }
+
+        .section h2 {
+            margin-top: 0;
+
+            padding-bottom: 8px;
+
+            color: #075985;
+
+            border-bottom: 2px solid #e0f2fe;
+        }
+
+
+        /* =============================
+           PROJECT INFO
+        ============================= */
+
+        .project-info {
+            padding: 16px;
+
+            background: #f0f9ff;
+
+            border-left: 4px solid #0284c7;
+
+            border-radius: 5px;
+        }
+
+        .project-info p {
+            margin: 7px 0;
+        }
+
+
+        /* =============================
+           COMPONENTS
+        ============================= */
+
+        .components {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+
+            margin-top: 20px;
+        }
+
+        .component-card {
+            padding: 18px;
+
+            text-align: center;
+
+            background: #f8fafc;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 7px;
+        }
+
+        .component-card strong {
+            color: #075985;
+
+            font-size: 18px;
+        }
+
+        .component-card p {
+            margin-bottom: 0;
+        }
+
+
+        /* =============================
+           TABLE
+        ============================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            margin-top: 15px;
+
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+
+            border: 1px solid #cbd5e1;
+
+            text-align: left;
+        }
+
+        th {
+            color: white;
+
+            background: #075985;
+        }
+
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+
+        /* =============================
+           CIRCUIT DIAGRAM
+        ============================= */
+
+        .circuit {
+            margin-top: 20px;
+
+            text-align: center;
+        }
+
+        .circuit img {
+            width: 100%;
+
+            max-width: 650px;
+
+            height: auto;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 6px;
+        }
+
+
+        /* =============================
+           CODE
+        ============================= */
+
+        .code-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 10px 15px;
+
+            color: white;
+
+            background: #1e293b;
+
+            border-radius: 7px 7px 0 0;
+        }
+
+        .copy-button {
+            padding: 7px 12px;
+
+            color: white;
+
+            background: #0284c7;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+        }
+
+        .copy-button:hover {
+            background: #0369a1;
+        }
+
+        pre {
+            margin: 0;
+
+            padding: 20px;
+
+            overflow-x: auto;
+
+            color: #e2e8f0;
+
+            background: #0f172a;
+
+            border-radius: 0 0 7px 7px;
+
+            font-family: Consolas, monospace;
+
+            font-size: 14px;
+        }
+
+
+        /* =============================
+           NOTE
+        ============================= */
+
+        .note {
+            margin-top: 18px;
+
+            padding: 14px;
+
+            color: #854d0e;
+
+            background: #fef9c3;
+
+            border: 1px solid #fde047;
+
+            border-radius: 6px;
+        }
+
+
+        /* =============================
+           BACK BUTTON
+        ============================= */
+
+        .back-button {
+            display: inline-block;
+
+            padding: 10px 18px;
+
+            color: white;
+
+            background: #0284c7;
+
+            text-decoration: none;
+
+            border-radius: 6px;
+
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background: #0369a1;
+        }
+
+
+        /* =============================
+           FOOTER
+        ============================= */
+
+        footer {
+            margin-top: 30px;
+
+            padding: 20px;
+
+            text-align: center;
+
+            color: #64748b;
+
+            background: white;
+
+            border-top: 1px solid #dbe3ea;
+        }
+
+
+        /* =============================
+           MOBILE
+        ============================= */
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 27px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .components {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                gap: 12px;
+
+                font-size: 13px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =============================
+         HEADER
+    ============================= -->
+
+    <header>
+
+        <h1>
+            Raspberry Pi Experiment No. 2
+        </h1>
+
+        <p>
+            DHT11 Temperature &amp; Humidity Monitoring Using Blynk
+        </p>
+
+    </header>
+
+
+
+    <!-- =============================
+         NAVIGATION
+    ============================= -->
+
+    <nav>
+
+        <a href="#details">
+            Details
+        </a>
+
+        <a href="#components">
+            Components
+        </a>
+
+        <a href="#connections">
+            Connections
+        </a>
+
+        <a href="#circuit">
+            Circuit Diagram
+        </a>
+
+        <a href="#working">
+            Working
+        </a>
+
+        <a href="#code">
+            Python Code
+        </a>
+
+        <a href="#steps">
+            Steps
+        </a>
+
+    </nav>
+
+
+
+    <main class="container">
+
+
+        <!-- =============================
+             PROJECT DETAILS
+        ============================= -->
+
+        <section
+            class="section"
+            id="details"
+        >
+
+            <h2>
+                Experiment Details
+            </h2>
+
+            <div class="project-info">
+
+                <p>
+                    <strong>Experiment:</strong>
+                    Raspberry Pi Experiment No. 2
+                </p>
+
+                <p>
+                    <strong>Experiment Name:</strong>
+                    DHT11 Temperature &amp; Humidity Monitoring Using Blynk
+                </p>
+
+                <p>
+                    <strong>Controller:</strong>
+                    Raspberry Pi
+                </p>
+
+                <p>
+                    <strong>Input Device:</strong>
+                    DHT11 Temperature and Humidity Sensor
+                </p>
+
+                <p>
+                    <strong>Sensor Pin:</strong>
+                    GPIO 4 (D4)
+                </p>
+
+                <p>
+                    <strong>Output Platform:</strong>
+                    Blynk IoT
+                </p>
+
+                <p>
+                    <strong>Virtual Pin for Temperature:</strong>
+                    V0
+                </p>
+
+                <p>
+                    <strong>Virtual Pin for Humidity:</strong>
+                    V1
+                </p>
+
+                <p>
+                    <strong>Programming Language:</strong>
+                    Python
+                </p>
+
+                <p>
+                    <strong>Libraries:</strong>
+                    board, adafruit_dht, BlynkLib
+                </p>
+
+                <p>
+                    <strong>Objective:</strong>
+                    To read temperature and humidity values
+                    from a DHT11 sensor connected to the
+                    Raspberry Pi and send the readings to
+                    Blynk for remote monitoring.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             COMPONENTS
+        ============================= -->
+
+        <section
+            class="section"
+            id="components"
+        >
+
+            <h2>
+                Required Components
+            </h2>
+
+            <div class="components">
+
+
+                <div class="component-card">
+
+                    <strong>
+                        Raspberry Pi
+                    </strong>
+
+                    <p>
+                        Main controller used to read the
+                        DHT11 sensor.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        DHT11 Sensor
+                    </strong>
+
+                    <p>
+                        Measures temperature and humidity.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        WiFi / Internet
+                    </strong>
+
+                    <p>
+                        Used to communicate with the
+                        Blynk platform.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        Blynk IoT Platform
+                    </strong>
+
+                    <p>
+                        Displays the temperature and
+                        humidity values remotely.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        Jumper Wires
+                    </strong>
+
+                    <p>
+                        Used to make the required sensor
+                        connections.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        Breadboard
+                    </strong>
+
+                    <p>
+                        Used for assembling the sensor
+                        circuit.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             CONNECTIONS
+        ============================= -->
+
+        <section
+            class="section"
+            id="connections"
+        >
+
+            <h2>
+                Circuit Connections
+            </h2>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Component
+                            </th>
+
+                            <th>
+                                Pin
+                            </th>
+
+                            <th>
+                                Raspberry Pi Connection
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+                                DHT11
+                            </td>
+
+                            <td>
+                                DATA
+                            </td>
+
+                            <td>
+                                GPIO 4 (D4)
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                DHT11
+                            </td>
+
+                            <td>
+                                VCC
+                            </td>
+
+                            <td>
+                                Raspberry Pi Power Supply
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                DHT11
+                            </td>
+
+                            <td>
+                                GND
+                            </td>
+
+                            <td>
+                                Raspberry Pi GND
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="note">
+
+                The DHT11 sensor data line is connected
+                to Raspberry Pi GPIO 4, represented as
+                <strong>D4</strong> in the Python program.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             CIRCUIT DIAGRAM
+        ============================= -->
+
+        <section
+            class="section"
+            id="circuit"
+        >
+
+            <h2>
+                Circuit Diagram
+            </h2>
+
+            <p>
+
+                Connect the DHT11 sensor data pin to
+                Raspberry Pi GPIO 4 (D4). Connect the
+                sensor power and ground to the appropriate
+                Raspberry Pi supply pins.
+
+            </p>
+
+
+            <div class="circuit">
+
+                <img
+                    src="Raspberry_Pi_DHT11_Circuit.png"
+                    alt="Raspberry Pi DHT11 Circuit Diagram"
+                >
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             WORKING
+        ============================= -->
+
+        <section
+            class="section"
+            id="working"
+        >
+
+            <h2>
+                Working Principle
+            </h2>
+
+            <p>
+
+                The Python program imports the required
+                libraries for time handling, Raspberry Pi
+                pin access, DHT11 sensor reading, and
+                Blynk communication.
+
+            </p>
+
+            <p>
+
+                The DHT11 sensor is initialized using
+                <strong>
+                    board.D4
+                </strong>,
+                which corresponds to Raspberry Pi GPIO 4.
+
+            </p>
+
+            <p>
+
+                The program continuously runs
+                <strong>
+                    blynk.run()
+                </strong>
+                to maintain communication with the
+                Blynk platform.
+
+            </p>
+
+            <p>
+
+                The temperature and humidity values are
+                read from the DHT11 sensor.
+
+            </p>
+
+            <p>
+
+                When valid readings are available, the
+                temperature is printed to the terminal
+                and sent to Blynk virtual pin
+                <strong>
+                    V0
+                </strong>.
+
+            </p>
+
+            <p>
+
+                The humidity value is sent to Blynk virtual
+                pin
+                <strong>
+                    V1
+                </strong>.
+
+            </p>
+
+            <p>
+
+                The program waits for approximately
+                two seconds before taking the next
+                reading.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =============================
+             PYTHON CODE
+        ============================= -->
+
+        <section
+            class="section"
+            id="code"
+        >
+
+            <h2>
+                Python Code
+            </h2>
+
+
+            <div class="code-header">
+
+                <span>
+                    dht11_blynk.py
+                </span>
+
+                <button
+                    type="button"
+                    class="copy-button"
+                    onclick="copyCode('pythonCode', this)"
+                >
+                    Copy Code
+                </button>
+
+            </div>
+
+
+            <pre><code id="pythonCode">import time
+
+import board
+
+import adafruit_dht
+
+import BlynkLib
+
+
+# Replace with your Blynk Auth Token
+
+BLYNK_AUTH = "YOUR_BLYNK_AUTH_TOKEN"
+
+blynk = BlynkLib.Blynk(BLYNK_AUTH)
+
+
+# DHT11 connected to GPIO4 (D4)
+
+dht = adafruit_dht.DHT11(board.D4)
+
+
+while True:
+
+    blynk.run()
+
+    try:
+
+        temperature = dht.temperature
+
+        humidity = dht.humidity
+
+        if temperature is not None and humidity is not None:
+
+            print("Temperature:", temperature, "C")
+
+            print("Humidity:", humidity, "%")
+
+            # Send values to Blynk
+
+            blynk.virtual_write(
+                0,
+                temperature
+            )  # V0
+
+            blynk.virtual_write(
+                1,
+                humidity
+            )  # V1
+
+    except RuntimeError:
+
+        pass
+
+    time.sleep(2)</code></pre>
+
+
+            <div class="note">
+
+                Replace
+                <strong>
+                    YOUR_BLYNK_AUTH_TOKEN
+                </strong>
+                with the Blynk authentication token
+                associated with your Blynk device.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             OPERATING STEPS
+        ============================= -->
+
+        <section
+            class="section"
+            id="steps"
+        >
+
+            <h2>
+                Steps to Perform the Experiment
+            </h2>
+
+            <ol>
+
+                <li>
+                    Connect the DHT11 sensor to the
+                    Raspberry Pi.
+                </li>
+
+                <li>
+                    Connect the DHT11 data pin to
+                    GPIO 4 (D4).
+                </li>
+
+                <li>
+                    Connect the sensor power and ground
+                    connections.
+                </li>
+
+                <li>
+                    Make sure the Raspberry Pi has an
+                    internet connection.
+                </li>
+
+                <li>
+                    Open the Python development environment
+                    or terminal.
+                </li>
+
+                <li>
+                    Install and import the required
+                    libraries.
+                </li>
+
+                <li>
+                    Create a Blynk device and obtain the
+                    Blynk authentication token.
+                </li>
+
+                <li>
+                    Enter the Blynk Auth Token in the
+                    Python program.
+                </li>
+
+                <li>
+                    Configure Blynk virtual pin
+                    <strong>
+                        V0
+                    </strong>
+                    for temperature.
+                </li>
+
+                <li>
+                    Configure Blynk virtual pin
+                    <strong>
+                        V1
+                    </strong>
+                    for humidity.
+                </li>
+
+                <li>
+                    Run the Python program.
+                </li>
+
+                <li>
+                    Observe the temperature and humidity
+                    values on the terminal and Blynk
+                    dashboard.
+
+                </li>
+
+            </ol>
+
+        </section>
+
+
+
+        <!-- =============================
+             EXPECTED OUTPUT
+        ============================= -->
+
+        <section class="section">
+
+            <h2>
+                Expected Output
+            </h2>
+
+            <p>
+
+                The terminal displays the measured
+                temperature in degrees Celsius.
+
+            </p>
+
+            <p>
+
+                The terminal also displays the measured
+                humidity percentage.
+
+            </p>
+
+            <p>
+
+                The temperature value is sent to Blynk
+                virtual pin
+                <strong>
+                    V0
+                </strong>.
+
+            </p>
+
+            <p>
+
+                The humidity value is sent to Blynk
+                virtual pin
+                <strong>
+                    V1
+                </strong>.
+
+            </p>
+
+            <p>
+
+                The readings are continuously updated at
+                approximately two-second intervals.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =============================
+             BACK BUTTON
+        ============================= -->
+
+        <a
+            href="index.html"
+            class="back-button"
+        >
+
+            ← Back to IoT Experiments
+
+        </a>
+
+
+    </main>
+
+
+
+    <footer>
+
+        Raspberry Pi Experiment No. 2 |
+        DHT11 Temperature &amp; Humidity Monitoring
+
+    </footer>
+
+
+
+    <!-- =============================
+         JAVASCRIPT
+    ============================= -->
+
+    <script>
+
+        function copyCode(codeId, button) {
+
+            const code =
+                document.getElementById(codeId).innerText;
+
+            navigator.clipboard
+                .writeText(code)
+                .then(function () {
+
+                    const originalText =
+                        button.textContent;
+
+                    button.textContent =
+                        "Copied!";
+
+                    setTimeout(
+                        function () {
+
+                            button.textContent =
+                                originalText;
+
+                        },
+                        2000
+                    );
+
+                })
+                .catch(function () {
+
+                    alert(
+                        "Code could not be copied."
+                    );
+
+                });
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
