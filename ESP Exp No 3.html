@@ -1,1 +1,1911 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ESP32-CAM Experiment No. 3 - Web Controlled Camera</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            color: #1e293b;
+
+            background: #f4f7fa;
+
+            line-height: 1.6;
+        }
+
+
+        /* =============================
+           HEADER
+        ============================= */
+
+        header {
+            padding: 35px 20px;
+
+            text-align: center;
+
+            color: white;
+
+            background: #075985;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+
+            font-size: 34px;
+        }
+
+        header p {
+            margin: 0;
+
+            color: #e0f2fe;
+
+            font-size: 16px;
+        }
+
+
+        /* =============================
+           NAVIGATION
+        ============================= */
+
+        nav {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 22px;
+
+            flex-wrap: wrap;
+
+            padding: 14px;
+
+            background: white;
+
+            border-bottom: 1px solid #dbe3ea;
+        }
+
+        nav a {
+            color: #075985;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #0284c7;
+        }
+
+
+        /* =============================
+           CONTAINER
+        ============================= */
+
+        .container {
+            width: 90%;
+
+            max-width: 900px;
+
+            margin: auto;
+
+            padding: 35px 0;
+        }
+
+
+        /* =============================
+           SECTIONS
+        ============================= */
+
+        .section {
+            margin-bottom: 25px;
+
+            padding: 25px;
+
+            background: white;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 8px;
+        }
+
+        .section h2 {
+            margin-top: 0;
+
+            padding-bottom: 8px;
+
+            color: #075985;
+
+            border-bottom: 2px solid #e0f2fe;
+        }
+
+
+        /* =============================
+           PROJECT INFO
+        ============================= */
+
+        .project-info {
+            padding: 16px;
+
+            background: #f0f9ff;
+
+            border-left: 4px solid #0284c7;
+
+            border-radius: 5px;
+        }
+
+        .project-info p {
+            margin: 7px 0;
+        }
+
+
+        /* =============================
+           COMPONENTS
+        ============================= */
+
+        .components {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+
+            margin-top: 20px;
+        }
+
+        .component-card {
+            padding: 18px;
+
+            text-align: center;
+
+            background: #f8fafc;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 7px;
+        }
+
+        .component-card strong {
+            color: #075985;
+
+            font-size: 18px;
+        }
+
+        .component-card p {
+            margin-bottom: 0;
+        }
+
+
+        /* =============================
+           TABLE
+        ============================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            margin-top: 15px;
+
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+
+            border: 1px solid #cbd5e1;
+
+            text-align: left;
+        }
+
+        th {
+            color: white;
+
+            background: #075985;
+        }
+
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+
+        /* =============================
+           CIRCUIT DIAGRAM
+        ============================= */
+
+        .circuit {
+            margin-top: 20px;
+
+            text-align: center;
+        }
+
+        .circuit img {
+            width: 100%;
+
+            max-width: 650px;
+
+            height: auto;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 6px;
+        }
+
+
+        /* =============================
+           CODE
+        ============================= */
+
+        .code-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 10px 15px;
+
+            color: white;
+
+            background: #1e293b;
+
+            border-radius: 7px 7px 0 0;
+        }
+
+        .copy-button {
+            padding: 7px 12px;
+
+            color: white;
+
+            background: #0284c7;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+        }
+
+        .copy-button:hover {
+            background: #0369a1;
+        }
+
+        pre {
+            margin: 0;
+
+            padding: 20px;
+
+            overflow-x: auto;
+
+            color: #e2e8f0;
+
+            background: #0f172a;
+
+            border-radius: 0 0 7px 7px;
+
+            font-family: Consolas, monospace;
+
+            font-size: 14px;
+        }
+
+
+        /* =============================
+           NOTE
+        ============================= */
+
+        .note {
+            margin-top: 18px;
+
+            padding: 14px;
+
+            color: #854d0e;
+
+            background: #fef9c3;
+
+            border: 1px solid #fde047;
+
+            border-radius: 6px;
+        }
+
+
+        /* =============================
+           BACK BUTTON
+        ============================= */
+
+        .back-button {
+            display: inline-block;
+
+            padding: 10px 18px;
+
+            color: white;
+
+            background: #0284c7;
+
+            text-decoration: none;
+
+            border-radius: 6px;
+
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background: #0369a1;
+        }
+
+
+        /* =============================
+           FOOTER
+        ============================= */
+
+        footer {
+            margin-top: 30px;
+
+            padding: 20px;
+
+            text-align: center;
+
+            color: #64748b;
+
+            background: white;
+
+            border-top: 1px solid #dbe3ea;
+        }
+
+
+        /* =============================
+           MOBILE
+        ============================= */
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 27px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .components {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                gap: 12px;
+
+                font-size: 13px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =============================
+         HEADER
+    ============================= -->
+
+    <header>
+
+        <h1>
+            ESP32-CAM Experiment No. 3
+        </h1>
+
+        <p>
+            Web Controlled Camera with Live Streaming
+        </p>
+
+    </header>
+
+
+
+    <!-- =============================
+         NAVIGATION
+    ============================= -->
+
+    <nav>
+
+        <a href="#details">
+            Details
+        </a>
+
+        <a href="#components">
+            Components
+        </a>
+
+        <a href="#connections">
+            Connections
+        </a>
+
+        <a href="#circuit">
+            Circuit Diagram
+        </a>
+
+        <a href="#working">
+            Working
+        </a>
+
+        <a href="#code">
+            Arduino Code
+        </a>
+
+        <a href="#steps">
+            Steps
+        </a>
+
+    </nav>
+
+
+
+    <main class="container">
+
+
+        <!-- =============================
+             PROJECT DETAILS
+        ============================= -->
+
+        <section
+            class="section"
+            id="details"
+        >
+
+            <h2>
+                Experiment Details
+            </h2>
+
+            <div class="project-info">
+
+                <p>
+                    <strong>Experiment:</strong>
+                    ESP32-CAM Experiment No. 3
+                </p>
+
+                <p>
+                    <strong>Experiment Name:</strong>
+                    Web Controlled Camera with Live Streaming
+                </p>
+
+                <p>
+                    <strong>Controller:</strong>
+                    ESP32-CAM
+                </p>
+
+                <p>
+                    <strong>Communication:</strong>
+                    WiFi
+                </p>
+
+                <p>
+                    <strong>Web Server:</strong>
+                    ESP32 WebServer
+                </p>
+
+                <p>
+                    <strong>Output:</strong>
+                    Live Camera Stream
+                </p>
+
+                <p>
+                    <strong>Additional Functions:</strong>
+                    Capture Photo, Flash ON/OFF, Video Size
+                    Selection
+                </p>
+
+                <p>
+                    <strong>Programming Software:</strong>
+                    Arduino IDE
+                </p>
+
+                <p>
+                    <strong>Objective:</strong>
+                    To create a web-based camera interface
+                    using ESP32-CAM that provides live video
+                    streaming, photo capture, flash control,
+                    and camera resolution control through a
+                    web browser.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             COMPONENTS
+        ============================= -->
+
+        <section
+            class="section"
+            id="components"
+        >
+
+            <h2>
+                Required Components
+            </h2>
+
+            <div class="components">
+
+
+                <div class="component-card">
+
+                    <strong>
+                        ESP32-CAM
+                    </strong>
+
+                    <p>
+                        Main controller used to capture and
+                        stream camera images.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        OV2640 Camera
+                    </strong>
+
+                    <p>
+                        Captures images and provides the
+                        video stream.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        WiFi Network
+                    </strong>
+
+                    <p>
+                        Provides wireless connection for
+                        accessing the web interface.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        Computer / Smartphone
+                    </strong>
+
+                    <p>
+                        Used to access and control the
+                        ESP32-CAM web page.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             CONNECTIONS
+        ============================= -->
+
+        <section
+            class="section"
+            id="connections"
+        >
+
+            <h2>
+                Camera Connections
+            </h2>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Camera Signal
+                            </th>
+
+                            <th>
+                                GPIO
+                            </th>
+
+                            <th>
+                                Function
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+                                PWDN
+                            </td>
+
+                            <td>
+                                32
+                            </td>
+
+                            <td>
+                                Camera power control
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                XCLK
+                            </td>
+
+                            <td>
+                                0
+                            </td>
+
+                            <td>
+                                Camera clock
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                SIOD
+                            </td>
+
+                            <td>
+                                26
+                            </td>
+
+                            <td>
+                                Camera control data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                SIOC
+                            </td>
+
+                            <td>
+                                27
+                            </td>
+
+                            <td>
+                                Camera control clock
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Y9
+                            </td>
+
+                            <td>
+                                35
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Y8
+                            </td>
+
+                            <td>
+                                34
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Y7
+                            </td>
+
+                            <td>
+                                39
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Y6
+                            </td>
+
+                            <td>
+                                36
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Y5
+                            </td>
+
+                            <td>
+                                21
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Y4
+                            </td>
+
+                            <td>
+                                19
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Y3
+                            </td>
+
+                            <td>
+                                18
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Y2
+                            </td>
+
+                            <td>
+                                5
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                VSYNC
+                            </td>
+
+                            <td>
+                                25
+                            </td>
+
+                            <td>
+                                Frame synchronization
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                HREF
+                            </td>
+
+                            <td>
+                                23
+                            </td>
+
+                            <td>
+                                Horizontal reference
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                PCLK
+                            </td>
+
+                            <td>
+                                22
+                            </td>
+
+                            <td>
+                                Pixel clock
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Flash LED
+                            </td>
+
+                            <td>
+                                GPIO 4
+                            </td>
+
+                            <td>
+                                Flash ON/OFF control
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             CIRCUIT DIAGRAM
+        ============================= -->
+
+        <section
+            class="section"
+            id="circuit"
+        >
+
+            <h2>
+                Circuit Diagram
+            </h2>
+
+            <p>
+
+                The ESP32-CAM camera module is connected
+                directly to the ESP32-CAM board using its
+                camera interface. GPIO 4 is used to control
+                the flash LED.
+
+            </p>
+
+
+            <div class="circuit">
+
+                <img
+                    src="ESP32_CAM_Web_Camera_Circuit.png"
+                    alt="ESP32-CAM Web Camera Circuit Diagram"
+                >
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             WORKING
+        ============================= -->
+
+        <section
+            class="section"
+            id="working"
+        >
+
+            <h2>
+                Working Principle
+            </h2>
+
+            <p>
+
+                The ESP32-CAM is configured as a web server
+                and connected to a WiFi network.
+
+            </p>
+
+            <p>
+
+                When a user opens the ESP32-CAM IP address
+                in a browser, the ESP32 sends an HTML web
+                page containing the camera controls.
+
+            </p>
+
+            <p>
+
+                The
+                <strong>
+                    /stream
+                </strong>
+                route sends camera frames continuously
+                using an MJPEG-style multipart stream.
+
+            </p>
+
+            <p>
+
+                The
+                <strong>
+                    Capture
+                </strong>
+                button requests a high-resolution image
+                from the camera.
+
+            </p>
+
+            <p>
+
+                The
+                <strong>
+                    Flash ON
+                </strong>
+                and
+                <strong>
+                    Flash OFF
+                </strong>
+                buttons control the flash LED connected
+                to GPIO 4.
+
+            </p>
+
+            <p>
+
+                The VGA and QVGA buttons change the camera
+                frame size through the
+                <strong>
+                    /size
+                </strong>
+                web request.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =============================
+             ARDUINO CODE
+        ============================= -->
+
+        <section
+            class="section"
+            id="code"
+        >
+
+            <h2>
+                Arduino Code
+            </h2>
+
+
+            <div class="code-header">
+
+                <span>
+                    esp32_cam_web_camera.ino
+                </span>
+
+                <button
+                    type="button"
+                    class="copy-button"
+                    onclick="copyCode('arduinoCode', this)"
+                >
+                    Copy Code
+                </button>
+
+            </div>
+
+
+            <pre><code id="arduinoCode">#include "esp_camera.h"
+
+#include &lt;WiFi.h&gt;
+
+#include &lt;WebServer.h&gt;
+
+const char *ssid =
+"Simusoft_Technologies";
+
+const char *password =
+"YOUR_WIFI_PASSWORD";
+
+// ---------- CAMERA PINS ----------
+
+#define PWDN_GPIO_NUM 32
+
+#define RESET_GPIO_NUM -1
+
+#define XCLK_GPIO_NUM 0
+
+#define SIOD_GPIO_NUM 26
+
+#define SIOC_GPIO_NUM 27
+
+#define Y9_GPIO_NUM 35
+
+#define Y8_GPIO_NUM 34
+
+#define Y7_GPIO_NUM 39
+
+#define Y6_GPIO_NUM 36
+
+#define Y5_GPIO_NUM 21
+
+#define Y4_GPIO_NUM 19
+
+#define Y3_GPIO_NUM 18
+
+#define Y2_GPIO_NUM 5
+
+#define VSYNC_GPIO_NUM 25
+
+#define HREF_GPIO_NUM 23
+
+#define PCLK_GPIO_NUM 22
+
+WebServer server(80);
+
+WiFiClient streamClient;
+
+// ---------- HTML ----------
+
+const char HTML_PAGE[] PROGMEM =
+R"rawliteral(
+
+&lt;!DOCTYPE html&gt;
+
+&lt;html&gt;
+
+&lt;head&gt;
+
+&lt;style&gt;
+
+body {
+
+    margin: 0;
+
+    padding: 0;
+
+    font-family: Arial;
+
+    background: #111;
+
+    color: #fff;
+
+}
+
+.container {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    padding-top: 20px;
+
+}
+
+#stream {
+
+    width: 320px;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+
+}
+
+.zoomed {
+
+    transform: scale(1.4);
+
+    box-shadow: 0 0 20px lime;
+
+    border: 3px solid lime;
+
+}
+
+.controls {
+
+    margin-top: 15px;
+
+    display: flex;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+}
+
+button {
+
+    padding: 8px 14px;
+
+    font-size: 14px;
+
+}
+
+&lt;/style&gt;
+
+&lt;/head&gt;
+
+&lt;body&gt;
+
+&lt;div class="container"&gt;
+
+    &lt;h2&gt;
+        ESP32-CAM Live Stream
+    &lt;/h2&gt;
+
+    &lt;img id="stream" src="/stream"&gt;
+
+    &lt;div class="controls"&gt;
+
+        &lt;button onclick="capture()"&gt;
+            Capture
+        &lt;/button&gt;
+
+        &lt;button onclick="fetch('/flash_on')"&gt;
+            Flash ON
+        &lt;/button&gt;
+
+        &lt;button onclick="fetch('/flash_off')"&gt;
+            Flash OFF
+        &lt;/button&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class="controls"&gt;
+
+        &lt;button onclick="fetch('/size?v=8')"&gt;
+            VGA
+        &lt;/button&gt;
+
+        &lt;button onclick="fetch('/size?v=3')"&gt;
+            QVGA
+        &lt;/button&gt;
+
+    &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+
+function capture() {
+
+    const img =
+        document.getElementById("stream");
+
+    fetch('/capture')
+
+        .then(res =&gt; res.blob())
+
+        .then(blob =&gt; {
+
+            const url =
+                URL.createObjectURL(blob);
+
+            img.src = url;
+
+            img.classList.add("zoomed");
+
+            setTimeout(() =&gt; {
+
+                img.classList.remove("zoomed");
+
+                img.src =
+                    "/stream?" + Date.now();
+
+                URL.revokeObjectURL(url);
+
+            }, 3000);
+
+        });
+
+}
+
+&lt;/script&gt;
+
+&lt;/body&gt;
+
+&lt;/html&gt;
+
+)rawliteral";
+
+// ---------- SETUP FUNCTION ----------
+
+void setup() {
+
+    Serial.begin(115200);
+
+    pinMode(4, OUTPUT);
+
+    digitalWrite(4, LOW);
+
+    camera_config_t config;
+
+    config.ledc_channel =
+        LEDC_CHANNEL_0;
+
+    config.ledc_timer =
+        LEDC_TIMER_0;
+
+    config.pin_d0 =
+        Y2_GPIO_NUM;
+
+    config.pin_d1 =
+        Y3_GPIO_NUM;
+
+    config.pin_d2 =
+        Y4_GPIO_NUM;
+
+    config.pin_d3 =
+        Y5_GPIO_NUM;
+
+    config.pin_d4 =
+        Y6_GPIO_NUM;
+
+    config.pin_d5 =
+        Y7_GPIO_NUM;
+
+    config.pin_d6 =
+        Y8_GPIO_NUM;
+
+    config.pin_d7 =
+        Y9_GPIO_NUM;
+
+    config.pin_xclk =
+        XCLK_GPIO_NUM;
+
+    config.pin_pclk =
+        PCLK_GPIO_NUM;
+
+    config.pin_vsync =
+        VSYNC_GPIO_NUM;
+
+    config.pin_href =
+        HREF_GPIO_NUM;
+
+    config.pin_sccb_sda =
+        SIOD_GPIO_NUM;
+
+    config.pin_sccb_scl =
+        SIOC_GPIO_NUM;
+
+    config.pin_pwdn =
+        PWDN_GPIO_NUM;
+
+    config.pin_reset =
+        RESET_GPIO_NUM;
+
+    config.xclk_freq_hz =
+        20000000;
+
+    config.pixel_format =
+        PIXFORMAT_JPEG;
+
+    config.frame_size =
+        FRAMESIZE_QVGA;
+
+    config.jpeg_quality =
+        15;
+
+    config.fb_count =
+        2;
+
+    config.grab_mode =
+        CAMERA_GRAB_LATEST;
+
+    if (esp_camera_init(&amp;config)
+        != ESP_OK) {
+
+        Serial.println(
+            "Camera init failed"
+        );
+
+        return;
+
+    }
+
+    sensor_t *s =
+        esp_camera_sensor_get();
+
+    s-&gt;set_vflip(s, 1);
+
+    WiFi.begin(
+        ssid,
+        password
+    );
+
+    while (
+        WiFi.status() != WL_CONNECTED
+    ) {
+
+        delay(300);
+
+    }
+
+    WiFi.setSleep(false);
+
+    Serial.print("IP: ");
+
+    Serial.println(
+        WiFi.localIP()
+    );
+
+    server.on("/", []() {
+
+        server.send_P(
+            200,
+            "text/html",
+            HTML_PAGE
+        );
+
+    });
+
+    server.on(
+        "/stream",
+        HTTP_GET,
+        []() {
+
+            streamClient =
+                server.client();
+
+            streamClient.println(
+                "HTTP/1.1 200 OK"
+            );
+
+            streamClient.println(
+                "Content-Type: multipart/x-mixed-replace; boundary=frame"
+            );
+
+            streamClient.println();
+
+        }
+    );
+
+    server.on(
+        "/capture",
+        HTTP_GET,
+        []() {
+
+            sensor_t *s =
+                esp_camera_sensor_get();
+
+            s-&gt;set_framesize(
+                s,
+                FRAMESIZE_VGA
+            );
+
+            camera_fb_t *fb =
+                esp_camera_fb_get();
+
+            if (!fb) {
+
+                server.send(
+                    500,
+                    "text/plain",
+                    "Camera error"
+                );
+
+                return;
+
+            }
+
+            WiFiClient client =
+                server.client();
+
+            client.println(
+                "HTTP/1.1 200 OK"
+            );
+
+            client.println(
+                "Content-Type: image/jpeg"
+            );
+
+            client.printf(
+                "Content-Length: %u\r\n\r\n",
+                fb-&gt;len
+            );
+
+            client.write(
+                fb-&gt;buf,
+                fb-&gt;len
+            );
+
+            esp_camera_fb_return(fb);
+
+            client.stop();
+
+            s-&gt;set_framesize(
+                s,
+                FRAMESIZE_QVGA
+            );
+
+        }
+    );
+
+    server.on(
+        "/flash_on",
+        []() {
+
+            digitalWrite(
+                4,
+                HIGH
+            );
+
+            server.send(
+                200,
+                "text/plain",
+                "OK"
+            );
+
+        }
+    );
+
+    server.on(
+        "/flash_off",
+        []() {
+
+            digitalWrite(
+                4,
+                LOW
+            );
+
+            server.send(
+                200,
+                "text/plain",
+                "OK"
+            );
+
+        }
+    );
+
+    server.on(
+        "/size",
+        []() {
+
+            if (
+                !server.hasArg("v")
+            ) {
+
+                server.send(
+                    400,
+                    "text/plain",
+                    "Missing arg"
+                );
+
+                return;
+
+            }
+
+            sensor_t *s =
+                esp_camera_sensor_get();
+
+            s-&gt;set_framesize(
+                s,
+                (framesize_t)
+                server.arg("v").toInt()
+            );
+
+            server.send(
+                200,
+                "text/plain",
+                "OK"
+            );
+
+        }
+    );
+
+    server.begin();
+
+}
+
+// ---------- LOOP FUNCTION ----------
+
+void loop() {
+
+    server.handleClient();
+
+    if (
+        streamClient &&
+        streamClient.connected()
+    ) {
+
+        camera_fb_t *fb =
+            esp_camera_fb_get();
+
+        if (!fb) return;
+
+        streamClient.printf(
+
+            "--frame\r\n"
+            "Content-Type: image/jpeg\r\n"
+            "Content-Length: %u\r\n\r\n",
+
+            fb-&gt;len
+
+        );
+
+        streamClient.write(
+            fb-&gt;buf,
+            fb-&gt;len
+        );
+
+        streamClient.print(
+            "\r\n"
+        );
+
+        esp_camera_fb_return(fb);
+
+        delay(20);
+
+    }
+
+}</code></pre>
+
+
+            <div class="note">
+
+                Enter your WiFi network name and password
+                before uploading the program. After the
+                ESP32-CAM connects to WiFi, note the IP
+                address shown in the Serial Monitor.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             OPERATING STEPS
+        ============================= -->
+
+        <section
+            class="section"
+            id="steps"
+        >
+
+            <h2>
+                Steps to Perform the Experiment
+            </h2>
+
+            <ol>
+
+                <li>
+                    Connect the ESP32-CAM to the computer
+                    using a suitable programming interface.
+                </li>
+
+                <li>
+                    Open Arduino IDE.
+                </li>
+
+                <li>
+                    Select the appropriate ESP32-CAM board.
+                </li>
+
+                <li>
+                    Enter the WiFi SSID and password in
+                    the program.
+                </li>
+
+                <li>
+                    Upload the program to the ESP32-CAM.
+                </li>
+
+                <li>
+                    Open the Serial Monitor and set the
+                    baud rate to
+                    <strong>
+                        115200
+                    </strong>.
+                </li>
+
+                <li>
+                    Wait for the ESP32-CAM to connect to
+                    the WiFi network.
+                </li>
+
+                <li>
+                    Note the IP address displayed in the
+                    Serial Monitor.
+                </li>
+
+                <li>
+                    Open the IP address in a browser on a
+                    device connected to the same WiFi
+                    network.
+                </li>
+
+                <li>
+                    Observe the live ESP32-CAM video stream.
+                </li>
+
+                <li>
+                    Click
+                    <strong>
+                        Capture
+                    </strong>
+                    to capture a photo.
+                </li>
+
+                <li>
+                    Use
+                    <strong>
+                        Flash ON
+                    </strong>
+                    and
+                    <strong>
+                        Flash OFF
+                    </strong>
+                    to control the flash LED.
+                </li>
+
+                <li>
+                    Use
+                    <strong>
+                        VGA
+                    </strong>
+                    or
+                    <strong>
+                        QVGA
+                    </strong>
+                    to change the video size.
+
+                </li>
+
+            </ol>
+
+        </section>
+
+
+
+        <!-- =============================
+             EXPECTED OUTPUT
+        ============================= -->
+
+        <section class="section">
+
+            <h2>
+                Expected Output
+            </h2>
+
+            <p>
+
+                The ESP32-CAM connects successfully to the
+                configured WiFi network and displays its
+                local IP address in the Serial Monitor.
+
+            </p>
+
+            <p>
+
+                When the IP address is opened in a browser,
+                a web page titled
+                <strong>
+                    ESP32-CAM Live Stream
+                </strong>
+                is displayed.
+
+            </p>
+
+            <p>
+
+                The live camera stream is shown on the
+                webpage.
+
+            </p>
+
+            <p>
+
+                The
+                <strong>
+                    Capture
+                </strong>
+                button captures a photograph.
+
+            </p>
+
+            <p>
+
+                The
+                <strong>
+                    Flash ON
+                </strong>
+                and
+                <strong>
+                    Flash OFF
+                </strong>
+                buttons control the flash LED.
+
+            </p>
+
+            <p>
+
+                The
+                <strong>
+                    VGA
+                </strong>
+                and
+                <strong>
+                    QVGA
+                </strong>
+                buttons change the camera frame size.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =============================
+             BACK BUTTON
+        ============================= -->
+
+        <a
+            href="index.html"
+            class="back-button"
+        >
+
+            ← Back to IoT Experiments
+
+        </a>
+
+
+    </main>
+
+
+
+    <footer>
+
+        ESP32-CAM Experiment No. 3 |
+        Web Controlled Camera
+
+    </footer>
+
+
+
+    <!-- =============================
+         JAVASCRIPT
+    ============================= -->
+
+    <script>
+
+        function copyCode(codeId, button) {
+
+            const code =
+                document.getElementById(codeId).innerText;
+
+            navigator.clipboard
+                .writeText(code)
+                .then(function () {
+
+                    const originalText =
+                        button.textContent;
+
+                    button.textContent =
+                        "Copied!";
+
+                    setTimeout(
+                        function () {
+
+                            button.textContent =
+                                originalText;
+
+                        },
+                        2000
+                    );
+
+                })
+                .catch(function () {
+
+                    alert(
+                        "Code could not be copied."
+                    );
+
+                });
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
