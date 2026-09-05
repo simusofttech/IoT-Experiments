@@ -1,1 +1,1882 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ESP32-CAM Experiment No. 4 - Camera with SD Card</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            color: #1e293b;
+
+            background: #f4f7fa;
+
+            line-height: 1.6;
+        }
+
+
+        /* =============================
+           HEADER
+        ============================= */
+
+        header {
+            padding: 35px 20px;
+
+            text-align: center;
+
+            color: white;
+
+            background: #075985;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+
+            font-size: 34px;
+        }
+
+        header p {
+            margin: 0;
+
+            color: #e0f2fe;
+
+            font-size: 16px;
+        }
+
+
+        /* =============================
+           NAVIGATION
+        ============================= */
+
+        nav {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 22px;
+
+            flex-wrap: wrap;
+
+            padding: 14px;
+
+            background: white;
+
+            border-bottom: 1px solid #dbe3ea;
+        }
+
+        nav a {
+            color: #075985;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #0284c7;
+        }
+
+
+        /* =============================
+           CONTAINER
+        ============================= */
+
+        .container {
+            width: 90%;
+
+            max-width: 900px;
+
+            margin: auto;
+
+            padding: 35px 0;
+        }
+
+
+        /* =============================
+           SECTIONS
+        ============================= */
+
+        .section {
+            margin-bottom: 25px;
+
+            padding: 25px;
+
+            background: white;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 8px;
+        }
+
+        .section h2 {
+            margin-top: 0;
+
+            padding-bottom: 8px;
+
+            color: #075985;
+
+            border-bottom: 2px solid #e0f2fe;
+        }
+
+
+        /* =============================
+           PROJECT INFO
+        ============================= */
+
+        .project-info {
+            padding: 16px;
+
+            background: #f0f9ff;
+
+            border-left: 4px solid #0284c7;
+
+            border-radius: 5px;
+        }
+
+        .project-info p {
+            margin: 7px 0;
+        }
+
+
+        /* =============================
+           COMPONENTS
+        ============================= */
+
+        .components {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+
+            margin-top: 20px;
+        }
+
+        .component-card {
+            padding: 18px;
+
+            text-align: center;
+
+            background: #f8fafc;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 7px;
+        }
+
+        .component-card strong {
+            color: #075985;
+
+            font-size: 18px;
+        }
+
+        .component-card p {
+            margin-bottom: 0;
+        }
+
+
+        /* =============================
+           TABLE
+        ============================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            margin-top: 15px;
+
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+
+            border: 1px solid #cbd5e1;
+
+            text-align: left;
+        }
+
+        th {
+            color: white;
+
+            background: #075985;
+        }
+
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+
+        /* =============================
+           CIRCUIT DIAGRAM
+        ============================= */
+
+        .circuit {
+            margin-top: 20px;
+
+            text-align: center;
+        }
+
+        .circuit img {
+            width: 100%;
+
+            max-width: 650px;
+
+            height: auto;
+
+            border: 1px solid #dbe3ea;
+
+            border-radius: 6px;
+        }
+
+
+        /* =============================
+           CODE
+        ============================= */
+
+        .code-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 10px 15px;
+
+            color: white;
+
+            background: #1e293b;
+
+            border-radius: 7px 7px 0 0;
+        }
+
+        .copy-button {
+            padding: 7px 12px;
+
+            color: white;
+
+            background: #0284c7;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+        }
+
+        .copy-button:hover {
+            background: #0369a1;
+        }
+
+        pre {
+            margin: 0;
+
+            padding: 20px;
+
+            overflow-x: auto;
+
+            color: #e2e8f0;
+
+            background: #0f172a;
+
+            border-radius: 0 0 7px 7px;
+
+            font-family: Consolas, monospace;
+
+            font-size: 14px;
+        }
+
+
+        /* =============================
+           NOTE
+        ============================= */
+
+        .note {
+            margin-top: 18px;
+
+            padding: 14px;
+
+            color: #854d0e;
+
+            background: #fef9c3;
+
+            border: 1px solid #fde047;
+
+            border-radius: 6px;
+        }
+
+
+        /* =============================
+           BACK BUTTON
+        ============================= */
+
+        .back-button {
+            display: inline-block;
+
+            padding: 10px 18px;
+
+            color: white;
+
+            background: #0284c7;
+
+            text-decoration: none;
+
+            border-radius: 6px;
+
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background: #0369a1;
+        }
+
+
+        /* =============================
+           FOOTER
+        ============================= */
+
+        footer {
+            margin-top: 30px;
+
+            padding: 20px;
+
+            text-align: center;
+
+            color: #64748b;
+
+            background: white;
+
+            border-top: 1px solid #dbe3ea;
+        }
+
+
+        /* =============================
+           MOBILE
+        ============================= */
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 27px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .components {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                gap: 12px;
+
+                font-size: 13px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =============================
+         HEADER
+    ============================= -->
+
+    <header>
+
+        <h1>
+            ESP32-CAM Experiment No. 4
+        </h1>
+
+        <p>
+            Camera Capture and Photo Storage on SD Card
+        </p>
+
+    </header>
+
+
+
+    <!-- =============================
+         NAVIGATION
+    ============================= -->
+
+    <nav>
+
+        <a href="#details">
+            Details
+        </a>
+
+        <a href="#components">
+            Components
+        </a>
+
+        <a href="#connections">
+            Connections
+        </a>
+
+        <a href="#circuit">
+            Circuit Diagram
+        </a>
+
+        <a href="#working">
+            Working
+        </a>
+
+        <a href="#code">
+            Arduino Code
+        </a>
+
+        <a href="#steps">
+            Steps
+        </a>
+
+    </nav>
+
+
+
+    <main class="container">
+
+
+        <!-- =============================
+             PROJECT DETAILS
+        ============================= -->
+
+        <section
+            class="section"
+            id="details"
+        >
+
+            <h2>
+                Experiment Details
+            </h2>
+
+            <div class="project-info">
+
+                <p>
+                    <strong>Experiment:</strong>
+                    ESP32-CAM Experiment No. 4
+                </p>
+
+                <p>
+                    <strong>Experiment Name:</strong>
+                    Camera Capture and Photo Storage on SD Card
+                </p>
+
+                <p>
+                    <strong>Controller:</strong>
+                    ESP32-CAM
+                </p>
+
+                <p>
+                    <strong>Camera:</strong>
+                    ESP32-CAM Camera Module
+                </p>
+
+                <p>
+                    <strong>Storage:</strong>
+                    SD Card using SD_MMC
+                </p>
+
+                <p>
+                    <strong>Communication:</strong>
+                    WiFi
+                </p>
+
+                <p>
+                    <strong>Web Server:</strong>
+                    ESP32 WebServer
+                </p>
+
+                <p>
+                    <strong>Output:</strong>
+                    Live Camera Stream and Captured Photograph
+                </p>
+
+                <p>
+                    <strong>Programming Software:</strong>
+                    Arduino IDE
+                </p>
+
+                <p>
+                    <strong>Objective:</strong>
+                    To create an ESP32-CAM web application
+                    that provides live video streaming and
+                    captures photographs which are stored
+                    on an SD card.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             COMPONENTS
+        ============================= -->
+
+        <section
+            class="section"
+            id="components"
+        >
+
+            <h2>
+                Required Components
+            </h2>
+
+            <div class="components">
+
+
+                <div class="component-card">
+
+                    <strong>
+                        ESP32-CAM
+                    </strong>
+
+                    <p>
+                        Main controller used for image
+                        capture and web streaming.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        Camera Module
+                    </strong>
+
+                    <p>
+                        Captures the images used for the
+                        live stream and photographs.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        Micro SD Card
+                    </strong>
+
+                    <p>
+                        Used to store captured photographs.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        WiFi Network
+                    </strong>
+
+                    <p>
+                        Provides wireless access to the
+                        ESP32-CAM web server.
+                    </p>
+
+                </div>
+
+
+                <div class="component-card">
+
+                    <strong>
+                        Computer / Smartphone
+                    </strong>
+
+                    <p>
+                        Used to access the live camera
+                        webpage.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             CONNECTIONS
+        ============================= -->
+
+        <section
+            class="section"
+            id="connections"
+        >
+
+            <h2>
+                Camera and SD Card Connections
+            </h2>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Signal
+                            </th>
+
+                            <th>
+                                GPIO
+                            </th>
+
+                            <th>
+                                Function
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+                                PWDN
+                            </td>
+
+                            <td>
+                                32
+                            </td>
+
+                            <td>
+                                Camera power control
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                XCLK
+                            </td>
+
+                            <td>
+                                0
+                            </td>
+
+                            <td>
+                                Camera clock
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                SIOD
+                            </td>
+
+                            <td>
+                                26
+                            </td>
+
+                            <td>
+                                Camera control data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                SIOC
+                            </td>
+
+                            <td>
+                                27
+                            </td>
+
+                            <td>
+                                Camera control clock
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Y9
+                            </td>
+
+                            <td>
+                                35
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Y8
+                            </td>
+
+                            <td>
+                                34
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Y7
+                            </td>
+
+                            <td>
+                                39
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Y6
+                            </td>
+
+                            <td>
+                                36
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Y5
+                            </td>
+
+                            <td>
+                                21
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Y4
+                            </td>
+
+                            <td>
+                                19
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Y3
+                            </td>
+
+                            <td>
+                                18
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Y2
+                            </td>
+
+                            <td>
+                                5
+                            </td>
+
+                            <td>
+                                Camera data
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                VSYNC
+                            </td>
+
+                            <td>
+                                25
+                            </td>
+
+                            <td>
+                                Frame synchronization
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                HREF
+                            </td>
+
+                            <td>
+                                23
+                            </td>
+
+                            <td>
+                                Horizontal reference
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                PCLK
+                            </td>
+
+                            <td>
+                                22
+                            </td>
+
+                            <td>
+                                Pixel clock
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="note">
+
+                The ESP32-CAM camera uses the GPIO
+                assignments shown above. The SD card is
+                accessed through the board's SD_MMC
+                interface.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             CIRCUIT DIAGRAM
+        ============================= -->
+
+        <section
+            class="section"
+            id="circuit"
+        >
+
+            <h2>
+                Circuit Diagram
+            </h2>
+
+            <p>
+
+                Connect the ESP32-CAM camera module to the
+                board and insert a compatible micro SD card
+                into the SD card slot.
+
+            </p>
+
+
+            <div class="circuit">
+
+                <img
+                    src="ESP32_CAM_SD_Card_Circuit.png"
+                    alt="ESP32-CAM SD Card Circuit Diagram"
+                >
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             WORKING
+        ============================= -->
+
+        <section
+            class="section"
+            id="working"
+        >
+
+            <h2>
+                Working Principle
+            </h2>
+
+            <p>
+
+                The ESP32-CAM is configured to capture
+                images in JPEG format at QVGA resolution.
+
+            </p>
+
+            <p>
+
+                The camera is initialized and the image is
+                vertically flipped using the camera sensor
+                settings.
+
+            </p>
+
+            <p>
+
+                The ESP32-CAM connects to the configured
+                WiFi network and starts a web server.
+
+            </p>
+
+            <p>
+
+                When the browser accesses the main webpage,
+                it displays the ESP32-CAM live stream and
+                a button for capturing photographs.
+
+            </p>
+
+            <p>
+
+                The
+                <strong>
+                    /stream
+                </strong>
+                route continuously sends JPEG camera
+                frames to the connected browser.
+
+            </p>
+
+            <p>
+
+                When the
+                <strong>
+                    Capture Photo
+                </strong>
+                button is pressed, a new camera frame is
+                captured.
+
+            </p>
+
+            <p>
+
+                The captured image is saved to the SD card
+                with a filename based on the elapsed
+                milliseconds.
+
+            </p>
+
+            <p>
+
+                The webpage then displays a message
+                indicating whether the photograph was
+                successfully saved.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =============================
+             ARDUINO CODE
+        ============================= -->
+
+        <section
+            class="section"
+            id="code"
+        >
+
+            <h2>
+                Arduino Code
+            </h2>
+
+
+            <div class="code-header">
+
+                <span>
+                    esp32_cam_sd_card.ino
+                </span>
+
+                <button
+                    type="button"
+                    class="copy-button"
+                    onclick="copyCode('arduinoCode', this)"
+                >
+                    Copy Code
+                </button>
+
+            </div>
+
+
+            <pre><code id="arduinoCode">#include "esp_camera.h"
+
+#include &lt;WiFi.h&gt;
+
+#include &lt;WebServer.h&gt;
+
+#include "FS.h"
+
+#include "SD_MMC.h"
+
+
+// =================== WIFI ===================
+
+const char *ssid =
+"YOUR_WIFI_NAME";
+
+const char *password =
+"YOUR_WIFI_PASSWORD";
+
+
+// =================== CAMERA PINS ===================
+
+#define PWDN_GPIO_NUM 32
+
+#define RESET_GPIO_NUM -1
+
+#define XCLK_GPIO_NUM 0
+
+#define SIOD_GPIO_NUM 26
+
+#define SIOC_GPIO_NUM 27
+
+#define Y9_GPIO_NUM 35
+
+#define Y8_GPIO_NUM 34
+
+#define Y7_GPIO_NUM 39
+
+#define Y6_GPIO_NUM 36
+
+#define Y5_GPIO_NUM 21
+
+#define Y4_GPIO_NUM 19
+
+#define Y3_GPIO_NUM 18
+
+#define Y2_GPIO_NUM 5
+
+#define VSYNC_GPIO_NUM 25
+
+#define HREF_GPIO_NUM 23
+
+#define PCLK_GPIO_NUM 22
+
+
+WebServer server(80);
+
+WiFiClient streamClient;
+
+
+// =================== HTML ===================
+
+const char HTML_PAGE[] PROGMEM =
+R"rawliteral(
+
+&lt;!DOCTYPE html&gt;
+
+&lt;html&gt;
+
+&lt;head&gt;
+
+&lt;title&gt;
+ESP32-CAM
+&lt;/title&gt;
+
+&lt;style&gt;
+
+body {
+
+    background: #111;
+
+    color: #fff;
+
+    text-align: center;
+
+    font-family: Arial;
+
+}
+
+img {
+
+    width: 640px;
+
+    max-width: 90%;
+
+    border: 2px solid #0f0;
+
+}
+
+button {
+
+    padding: 15px 30px;
+
+    margin: 10px;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+}
+
+&lt;/style&gt;
+
+&lt;/head&gt;
+
+&lt;body&gt;
+
+&lt;h2&gt;
+ESP32-CAM Live Stream
+&lt;/h2&gt;
+
+&lt;img id="stream" src="/stream"&gt;
+
+&lt;br&gt;
+
+&lt;button onclick="capture()"&gt;
+Capture Photo
+&lt;/button&gt;
+
+&lt;script&gt;
+
+function capture() {
+
+    fetch('/capture')
+
+        .then(response =&gt; response.text())
+
+        .then(data =&gt; alert(data));
+
+}
+
+&lt;/script&gt;
+
+&lt;/body&gt;
+
+&lt;/html&gt;
+
+)rawliteral";
+
+
+// =================== SETUP ===================
+
+void setup() {
+
+    Serial.begin(115200);
+
+    camera_config_t config;
+
+    config.ledc_channel =
+        LEDC_CHANNEL_0;
+
+    config.ledc_timer =
+        LEDC_TIMER_0;
+
+    config.pin_d0 =
+        Y2_GPIO_NUM;
+
+    config.pin_d1 =
+        Y3_GPIO_NUM;
+
+    config.pin_d2 =
+        Y4_GPIO_NUM;
+
+    config.pin_d3 =
+        Y5_GPIO_NUM;
+
+    config.pin_d4 =
+        Y6_GPIO_NUM;
+
+    config.pin_d5 =
+        Y7_GPIO_NUM;
+
+    config.pin_d6 =
+        Y8_GPIO_NUM;
+
+    config.pin_d7 =
+        Y9_GPIO_NUM;
+
+    config.pin_xclk =
+        XCLK_GPIO_NUM;
+
+    config.pin_pclk =
+        PCLK_GPIO_NUM;
+
+    config.pin_vsync =
+        VSYNC_GPIO_NUM;
+
+    config.pin_href =
+        HREF_GPIO_NUM;
+
+    config.pin_sccb_sda =
+        SIOD_GPIO_NUM;
+
+    config.pin_sccb_scl =
+        SIOC_GPIO_NUM;
+
+    config.pin_pwdn =
+        PWDN_GPIO_NUM;
+
+    config.pin_reset =
+        RESET_GPIO_NUM;
+
+    config.xclk_freq_hz =
+        13000000;
+
+    config.pixel_format =
+        PIXFORMAT_JPEG;
+
+    config.frame_size =
+        FRAMESIZE_QVGA;
+
+    config.jpeg_quality =
+        10;
+
+    config.fb_count =
+        1;
+
+    config.grab_mode =
+        CAMERA_GRAB_LATEST;
+
+
+    // Initialize camera
+
+    esp_err_t err =
+        esp_camera_init(
+            &amp;config
+        );
+
+    if (err != ESP_OK) {
+
+        Serial.printf(
+            "Camera init failed with error 0x%x\n",
+            err
+        );
+
+        return;
+
+    }
+
+    Serial.println(
+        "Camera initialized successfully!"
+    );
+
+
+    sensor_t *s =
+        esp_camera_sensor_get();
+
+    s-&gt;set_vflip(
+        s,
+        1
+    );
+
+
+    // =================== SD CARD ===================
+
+    if (
+        !SD_MMC.begin(
+            "/sdcard",
+            true
+        )
+    ) {
+
+        Serial.println(
+            "SD Card Failed or Not Present"
+        );
+
+    }
+
+    else {
+
+        Serial.println(
+            "SD Card Mounted"
+        );
+
+    }
+
+
+    // =================== WIFI ===================
+
+    Serial.print(
+        "Connecting to WiFi"
+    );
+
+    WiFi.begin(
+        ssid,
+        password
+    );
+
+    int attempts = 0;
+
+    while (
+        WiFi.status() != WL_CONNECTED &&
+        attempts < 20
+    ) {
+
+        delay(500);
+
+        Serial.print(".");
+
+        attempts++;
+
+    }
+
+
+    if (
+        WiFi.status() == WL_CONNECTED
+    ) {
+
+        Serial.println(
+            "\nWiFi Connected!"
+        );
+
+        Serial.print(
+            "Camera URL: http://"
+        );
+
+        Serial.println(
+            WiFi.localIP()
+        );
+
+    }
+
+    else {
+
+        Serial.println(
+            "\nWiFi Failed!"
+        );
+
+    }
+
+
+    // =================== WEB ROUTES ===================
+
+    server.on(
+        "/",
+        []() {
+
+            server.send_P(
+                200,
+                "text/html",
+                HTML_PAGE
+            );
+
+        }
+    );
+
+
+    server.on(
+        "/stream",
+        HTTP_GET,
+        []() {
+
+            WiFiClient client =
+                server.client();
+
+            client.println(
+                "HTTP/1.1 200 OK"
+            );
+
+            client.println(
+                "Content-Type: multipart/x-mixed-replace; boundary=frame"
+            );
+
+            client.println();
+
+            streamClient =
+                client;
+
+        }
+    );
+
+
+    server.on(
+        "/capture",
+        HTTP_GET,
+        []() {
+
+            if (streamClient) {
+
+                streamClient.stop();
+
+            }
+
+
+            camera_fb_t *fb =
+                esp_camera_fb_get();
+
+
+            if (!fb) {
+
+                server.send(
+                    500,
+                    "text/plain",
+                    "Camera capture failed"
+                );
+
+                return;
+
+            }
+
+
+            // Save to SD card
+
+            String filename =
+                "/photo_" +
+                String(millis()) +
+                ".jpg";
+
+
+            File file =
+                SD_MMC.open(
+                    filename,
+                    FILE_WRITE
+                );
+
+
+            if (file) {
+
+                file.write(
+                    fb-&gt;buf,
+                    fb-&gt;len
+                );
+
+                file.close();
+
+
+                Serial.println(
+                    "Photo saved: " +
+                    filename
+                );
+
+
+                server.send(
+                    200,
+                    "text/plain",
+                    "Photo saved: " +
+                    filename
+                );
+
+            }
+
+            else {
+
+                server.send(
+                    500,
+                    "text/plain",
+                    "SD card write failed"
+                );
+
+            }
+
+
+            esp_camera_fb_return(
+                fb
+            );
+
+        }
+    );
+
+
+    server.begin();
+
+    Serial.println(
+        "HTTP server started"
+    );
+
+}
+
+
+// =================== LOOP ===================
+
+void loop() {
+
+    server.handleClient();
+
+
+    if (
+        streamClient &&
+        streamClient.connected()
+    ) {
+
+        camera_fb_t *fb =
+            esp_camera_fb_get();
+
+
+        if (fb) {
+
+            streamClient.print(
+                "--frame\r\n"
+            );
+
+            streamClient.print(
+                "Content-Type: image/jpeg\r\n\r\n"
+            );
+
+            streamClient.write(
+                fb-&gt;buf,
+                fb-&gt;len
+            );
+
+            streamClient.print(
+                "\r\n"
+            );
+
+
+            esp_camera_fb_return(
+                fb
+            );
+
+        }
+
+
+        delay(30);
+
+    }
+
+}</code></pre>
+
+
+            <div class="note">
+
+                Enter your WiFi SSID and password in the
+                program before uploading it. A compatible
+                micro SD card should also be inserted into
+                the ESP32-CAM before using the photo storage
+                feature.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================
+             OPERATING STEPS
+        ============================= -->
+
+        <section
+            class="section"
+            id="steps"
+        >
+
+            <h2>
+                Steps to Perform the Experiment
+            </h2>
+
+            <ol>
+
+                <li>
+                    Insert a compatible micro SD card into
+                    the ESP32-CAM.
+                </li>
+
+                <li>
+                    Connect the ESP32-CAM to the computer
+                    using a suitable programming interface.
+                </li>
+
+                <li>
+                    Open Arduino IDE.
+                </li>
+
+                <li>
+                    Select the appropriate ESP32-CAM board.
+                </li>
+
+                <li>
+                    Enter the WiFi network name and
+                    password in the program.
+                </li>
+
+                <li>
+                    Upload the program to the ESP32-CAM.
+                </li>
+
+                <li>
+                    Open the Serial Monitor and set the
+                    baud rate to
+                    <strong>
+                        115200
+                    </strong>.
+                </li>
+
+                <li>
+                    Wait until the camera is initialized
+                    and the SD card is mounted.
+                </li>
+
+                <li>
+                    Wait for the ESP32-CAM to connect to
+                    the WiFi network.
+                </li>
+
+                <li>
+                    Note the camera URL displayed in the
+                    Serial Monitor.
+                </li>
+
+                <li>
+                    Open the displayed IP address in a web
+                    browser connected to the same network.
+                </li>
+
+                <li>
+                    Observe the live camera stream.
+                </li>
+
+                <li>
+                    Click
+                    <strong>
+                        Capture Photo
+                    </strong>
+                    to take a photograph.
+                </li>
+
+                <li>
+                    Check the SD card for the saved
+                    photograph.
+
+                </li>
+
+            </ol>
+
+        </section>
+
+
+
+        <!-- =============================
+             EXPECTED OUTPUT
+        ============================= -->
+
+        <section class="section">
+
+            <h2>
+                Expected Output
+            </h2>
+
+            <p>
+
+                The Serial Monitor displays that the camera
+                has been initialized successfully.
+
+            </p>
+
+            <p>
+
+                The SD card is mounted successfully and the
+                ESP32-CAM connects to the configured WiFi
+                network.
+
+            </p>
+
+            <p>
+
+                The ESP32-CAM IP address is displayed in
+                the Serial Monitor.
+
+            </p>
+
+            <p>
+
+                Opening the IP address in a browser displays
+                the live camera stream.
+
+            </p>
+
+            <p>
+
+                Pressing
+                <strong>
+                    Capture Photo
+                </strong>
+                captures an image and saves it to the SD
+                card.
+
+            </p>
+
+            <p>
+
+                A message such as
+                <strong>
+                    Photo saved: /photo_XXXX.jpg
+                </strong>
+                is displayed after successful storage.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =============================
+             BACK BUTTON
+        ============================= -->
+
+        <a
+            href="index.html"
+            class="back-button"
+        >
+
+            ← Back to IoT Experiments
+
+        </a>
+
+
+    </main>
+
+
+
+    <footer>
+
+        ESP32-CAM Experiment No. 4 |
+        Camera Capture and SD Card Storage
+
+    </footer>
+
+
+
+    <!-- =============================
+         JAVASCRIPT
+    ============================= -->
+
+    <script>
+
+        function copyCode(codeId, button) {
+
+            const code =
+                document.getElementById(codeId).innerText;
+
+            navigator.clipboard
+                .writeText(code)
+                .then(function () {
+
+                    const originalText =
+                        button.textContent;
+
+                    button.textContent =
+                        "Copied!";
+
+                    setTimeout(
+                        function () {
+
+                            button.textContent =
+                                originalText;
+
+                        },
+                        2000
+                    );
+
+                })
+                .catch(function () {
+
+                    alert(
+                        "Code could not be copied."
+                    );
+
+                });
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
